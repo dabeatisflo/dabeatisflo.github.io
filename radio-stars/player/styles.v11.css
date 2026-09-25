@@ -450,6 +450,14 @@ body[data-share-open="true"] { overflow: hidden; }
 
 .fine-print a { text-underline-offset: 3px; }
 
+.copyright {
+  margin: 14px 18px 0;
+  color: #716d6e;
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: center;
+}
+
 .toast {
   position: fixed;
   z-index: 30;

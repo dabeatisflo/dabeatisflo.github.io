@@ -1449,9 +1449,27 @@ button { color: inherit; }
   padding: 22px 0 30px;
   border-top: 1px solid rgba(255,255,255,.1);
   color: rgba(255,255,255,.48);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
+
+.footer-rights {
+  padding: 0 0 32px;
+  color: rgba(255,255,255,.72);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.footer-rights summary {
+  width: fit-content;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.footer-rights summary:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.footer-rights p { max-width: 90ch; margin: 12px 0 0; }
 
 .toast {
   position: fixed;
