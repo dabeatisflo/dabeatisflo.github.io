@@ -1,7 +1,7 @@
 
 "use strict";
 
-const PLAYER_URL = "https://radio-stars-player.gzqlah8.chatgpt.site/";
+const PLAYER_URL = new URL("player/", location.href).href;
 const PLAYER_ORIGIN = new URL(PLAYER_URL).origin;
 const AVAILABLE_LOCALES = Object.freeze(["fr"]);
 const KNOWN_LOCALES = Object.freeze(["fr", "nl", "en"]);
@@ -20,7 +20,7 @@ const appDeviceHelp = document.querySelector("#app-device-help");
 const toast = document.querySelector("#toast");
 let toastTimer = 0;
 
-const SITE_STREAM_URL = PLAYER_URL + "stream";
+const SITE_STREAM_URL = "https://radio-stars-player.gzqlah8.chatgpt.site/stream";
 const SITE_STARTUP_TIMEOUT_MS = 9000;
 const siteAudio = new Audio();
 siteAudio.preload = "none";
@@ -391,18 +391,11 @@ if (contactForm) {
     const subject = String(fields.get("subject") || "").trim().slice(0, 140);
     const message = String(fields.get("message") || "").trim().slice(0, 1500);
     const mailSubject = "[Site Radio Stars] " + subject;
-    const mailBody = [
-      "Nom : " + name,
-      "E-mail : " + email,
-      "",
-      message
-    ].join("\n");
+    const mailBody = ["Nom : " + name, "E-mail : " + email, "", message].join("\n");
 
     showToast("Votre messagerie va s’ouvrir");
     window.location.href = "mailto:info@radiostars.be?subject="
-      + encodeURIComponent(mailSubject)
-      + "&body="
-      + encodeURIComponent(mailBody);
+      + encodeURIComponent(mailSubject) + "&body=" + encodeURIComponent(mailBody);
   });
 }
 

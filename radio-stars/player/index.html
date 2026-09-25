@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' mailto:; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self' https://radio-stars-player.gzqlah8.chatgpt.site; connect-src 'self' https://radio-stars-player.gzqlah8.chatgpt.site; manifest-src 'self'; frame-src 'none'; upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#ed0712">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="Écoutez Radio Stars 98.5 FM et DAB+ en direct. Le player officiel, autonome et partageable.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_BE">
+    <meta property="og:site_name" content="Radio Stars">
+    <meta property="og:title" content="Radio Stars — Le Player">
+    <meta property="og:description" content="Écoutez Radio Stars 98.5 FM et DAB+ en direct.">
+    <meta property="og:url" content="https://dabeatisflo.github.io/radio-stars/player/">
+    <meta property="og:image" content="https://dabeatisflo.github.io/radio-stars/player/logo.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Logo Radio Stars 98.5 FM">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Radio Stars — Le Player">
+    <meta name="twitter:description" content="Écoutez Radio Stars en direct.">
+    <meta name="twitter:image" content="https://dabeatisflo.github.io/radio-stars/player/logo.png">
+    <link rel="canonical" href="https://dabeatisflo.github.io/radio-stars/player/">
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./logo.png">
+    <link rel="stylesheet" href="./styles.v11.css">
+    <title>Le Player — Radio Stars</title>
+  </head>
+  <body>
+    <main class="player-shell">
+      <section class="player-card" aria-labelledby="station-name">
+        <div class="topbar">
+          <span class="live-pill"><span class="live-dot" aria-hidden="true"></span> En direct</span>
+          <span class="independent-pill">Player officiel</span>
+        </div>
+
+        <div class="brand">
+          <img src="./logo.png" width="512" height="512" alt="Radio Stars 98.5 FM">
+          <h1 id="station-name" class="station-line">
+            <span>98.5 FM</span><span>DAB+</span><span>En ligne</span>
+          </h1>
+        </div>
+
+        <div class="control-zone">
+          <button id="play" class="play-button" type="button" data-state="paused"
+                  aria-label="Écouter Radio Stars" aria-pressed="false">
+            <span class="play-icon" aria-hidden="true"></span>
+          </button>
+
+          <div id="status" class="status" role="status" aria-live="polite">
+            <strong id="status-title">Prêt à écouter</strong>
+            <span id="status-detail">Appuyez sur le bouton rouge pour lancer le direct.</span>
+          </div>
+
+          <label class="volume-row" for="volume">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3Zm11.5-.8v7.6a5 5 0 0 0 0-7.6ZM14.5 3v2.1a8 8 0 0 1 0 13.8V21a10 10 0 0 0 0-18Z"/></svg>
+            <span class="sr-only">Volume</span>
+            <input id="volume" type="range" min="0" max="100" value="82" aria-label="Volume">
+            <output id="volume-value" for="volume">82%</output>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="share" class="action" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.5.3-2 .8l-7.1-4.1c.1-.3.1-.5.1-.8s0-.5-.1-.8l7-4.1A3 3 0 1 0 15 5c0 .3 0 .5.1.8l-7 4.1A3 3 0 1 0 8 14.1l7.1 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-2.9Z"/></svg>
+            Partager
+          </button>
+          <a class="action" href="../" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3a15.7 15.7 0 0 0-1.4-3.6A8.1 8.1 0 0 1 18.9 8ZM12 4c.8 1 1.5 2.3 1.9 4h-3.8c.4-1.7 1.1-3 1.9-4ZM4.3 14a8.2 8.2 0 0 1 0-4h3.4a16.5 16.5 0 0 0 0 4H4.3Zm.8 2h3a15.7 15.7 0 0 0 1.4 3.6A8.1 8.1 0 0 1 5.1 16Zm3-8h-3a8.1 8.1 0 0 1 4.4-3.6A15.7 15.7 0 0 0 8.1 8Zm3.9 12c-.8-1-1.5-2.3-1.9-4h3.8c-.4 1.7-1.1 3-1.9 4Zm2.3-6H9.7a13.7 13.7 0 0 1 0-4h4.6a13.7 13.7 0 0 1 0 4Zm.2 5.6a15.7 15.7 0 0 0 1.4-3.6h3a8.1 8.1 0 0 1-4.4 3.6Zm1.8-5.6a16.5 16.5 0 0 0 0-4h3.4a8.2 8.2 0 0 1 0 4h-3.4Z"/></svg>
+            Le site
+          </a>
+        </div>
+      </section>
+
+      <p class="fine-print">
+        Ce player fonctionne indépendamment du site principal.
+        Une connexion internet est nécessaire.
+        <a href="https://www.facebook.com/RadioStars.BE" target="_blank" rel="noopener noreferrer">Radio Stars sur Facebook</a>
+      </p>
+      <noscript><p class="noscript">JavaScript doit être activé pour utiliser le player.</p></noscript>
+    </main>
+
+    <div class="share-panel" id="share-panel" hidden>
+      <button class="share-backdrop" type="button" data-share-close aria-label="Fermer le partage"></button>
+      <section class="share-dialog" role="dialog" aria-modal="true" aria-labelledby="share-title">
+        <div class="share-heading">
+          <div>
+            <h2 id="share-title">Partager le player</h2>
+            <p>Envoyez le lien officiel pour écouter Radio Stars partout.</p>
+          </div>
+          <button class="share-close" type="button" data-share-close aria-label="Fermer">×</button>
+        </div>
+        <div class="share-link-row">
+          <input class="share-url" id="share-url" type="text" readonly
+                 value="https://dabeatisflo.github.io/radio-stars/player/" aria-label="Lien du player Radio Stars">
+          <button class="share-copy" id="copy-share" type="button">Copier</button>
+        </div>
+        <p class="share-feedback" id="share-feedback" role="status" aria-live="polite" hidden></p>
+        <div class="share-options">
+          <a class="share-option" id="whatsapp-share" href="https://wa.me/"
+             target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="share-option" id="facebook-share" href="https://www.facebook.com/"
+             target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a class="share-option" id="gmail-share" href="https://mail.google.com/"
+             target="_blank" rel="noopener noreferrer">Gmail</a>
+          <a class="share-option" id="outlook-share" href="https://outlook.live.com/"
+             target="_blank" rel="noopener noreferrer">Outlook</a>
+          <a class="share-option" id="email-share" href="mailto:">E-mailprogramma</a>
+          <a class="share-option" id="sms-share" href="sms:">SMS</a>
+          <a class="share-option" id="x-share" href="https://twitter.com/"
+             target="_blank" rel="noopener noreferrer">X</a>
+          <a class="share-option" id="telegram-share" href="https://t.me/"
+             target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a class="share-option share-option-wide" id="tiktok-share"
+             href="https://www.tiktok.com/messages" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <button class="share-option share-option-wide" id="native-share" type="button">Plus d’applications…</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.v11.js" defer></script>
+  </body>
+</html>
