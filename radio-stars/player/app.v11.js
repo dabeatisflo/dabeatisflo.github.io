@@ -26,9 +26,9 @@ const toast = document.querySelector("#toast");
 
 const STREAM_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/stream";
 const SHARE_URL = new URL("./", location.href).href;
-const STARTUP_TIMEOUT_MS = 9000;
+const STARTUP_TIMEOUT_MS = 12000;
 const audio = new Audio();
-audio.preload = "none";
+audio.preload = "auto";
 audio.playsInline = true;
 
 let toastTimer = 0;
@@ -48,7 +48,7 @@ function normalizeLocale(value) {
 }
 let storedLanguage = null;
 try { storedLanguage = normalizeLocale(localStorage.getItem("radioStarsLocale")); } catch (_) {}
-const activeLocale = normalizeLocale(query.get("lang")) || storedLanguage || normalizeLocale(navigator.language) || "fr";
+const activeLocale = normalizeLocale(query.get("lang")) || storedLanguage || "fr";
 try { localStorage.setItem("radioStarsLocale", activeLocale); } catch (_) {}
 document.documentElement.lang = activeLocale;
 playerLanguage.value = activeLocale;
@@ -311,9 +311,19 @@ function finishPlaybackAttempt(attempt) {
 
 function loadFreshStream() {
   audio.pause();
+  audio.removeAttribute("src");
+  audio.load();
   audio.src = STREAM_PATH + "?session=" + Date.now().toString(36);
+  audio.preload = "auto";
   audio.load();
   playbackTimedOut = false;
+}
+
+function warmStreamConnection() {
+  if (audio.src) return;
+  audio.src = STREAM_PATH + "?session=" + Date.now().toString(36);
+  audio.preload = "auto";
+  audio.load();
 }
 
 function showPlaybackFailure(error, automatic) {
@@ -384,11 +394,6 @@ function startPlayback(automatic) {
 
 playButton.addEventListener("click", function () {
   if (playPending) return;
-
-  if (remoteOrigin && !remoteFailed) {
-    sendRemoteCommand("toggle");
-    return;
-  }
 
   if (!audio.paused) {
     audio.pause();
@@ -593,10 +598,9 @@ if ("mediaSession" in navigator) {
   } catch (_) {}
 }
 
-if (remoteOrigin) {
-  setPlaying(true);
-  setStatus(t("Vous écoutez Radio Stars"), t("Le direct 98.5 FM est en cours."));
-  sendRemoteCommand("state");
-} else if (query.get("autoplay") !== "0") {
+if (query.get("autoplay") !== "0") {
+  warmStreamConnection();
   startPlayback(true);
+} else {
+  warmStreamConnection();
 }
