@@ -31,7 +31,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./logo.svg">
     <link rel="manifest" href="./site.webmanifest">
-    <link rel="stylesheet" href="./styles.css?v=8">
+    <link rel="stylesheet" href="./styles.v9.css">
     <title>Radio Stars 98.5 FM — Appréciez la différence</title>
   </head>
   <body>
@@ -311,8 +311,38 @@
             <h2 id="contact-title">Une question ? <em>Parlons-nous.</em></h2>
             <p class="contact-intro">
               Pour une information, une demande ou simplement pour entrer en contact
-              avec l’équipe, utilisez les coordonnées officielles ci-contre.
+              avec l’équipe, complétez le formulaire ou utilisez les coordonnées officielles.
             </p>
+
+            <form class="contact-form" id="contact-form" action="/" method="post" accept-charset="UTF-8">
+              <div class="contact-form-grid">
+                <label class="contact-field">
+                  <span>Votre nom</span>
+                  <input name="name" type="text" autocomplete="name" maxlength="100"
+                         placeholder="Nom et prénom" required>
+                </label>
+                <label class="contact-field">
+                  <span>Votre e-mail</span>
+                  <input name="email" type="email" inputmode="email" autocomplete="email"
+                         maxlength="160" placeholder="vous@exemple.be" required>
+                </label>
+                <label class="contact-field contact-field-wide">
+                  <span>Objet</span>
+                  <input name="subject" type="text" maxlength="140"
+                         placeholder="Comment pouvons-nous vous aider ?" required>
+                </label>
+                <label class="contact-field contact-field-wide">
+                  <span>Votre message</span>
+                  <textarea name="message" maxlength="1500"
+                            placeholder="Écrivez votre message ici…" required></textarea>
+                </label>
+              </div>
+              <div class="contact-form-actions">
+                <button class="button button-light" type="submit">Préparer mon message</button>
+                <p class="contact-form-note">Votre messagerie s’ouvrira avec le message adressé à info@radiostars.be.</p>
+              </div>
+            </form>
+
             <div class="hero-actions">
               <a class="button button-light" href="mailto:info@radiostars.be">Envoyer un e-mail</a>
               <a class="button button-outline" href="tel:+3265872127">Nous appeler</a>
@@ -365,6 +395,6 @@
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js?v=8" defer></script>
+    <script src="./app.v9.js" defer></script>
   </body>
 </html>

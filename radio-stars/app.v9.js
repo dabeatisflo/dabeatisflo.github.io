@@ -12,23 +12,56 @@ const navPanel = document.querySelector("#nav-panel");
 const language = document.querySelector("#language");
 const languageTrigger = document.querySelector("#language-trigger");
 const languageOptions = Array.from(document.querySelectorAll("[data-language]"));
+const contactForm = document.querySelector("#contact-form");
 const toast = document.querySelector("#toast");
 let toastTimer = 0;
 
+const SITE_STREAM_URL = PLAYER_URL + "stream";
+const SITE_STARTUP_TIMEOUT_MS = 9000;
 const siteAudio = new Audio();
-siteAudio.src = PLAYER_URL + "stream";
 siteAudio.preload = "none";
 siteAudio.playsInline = true;
 
 let playerPopup = null;
 let sitePlayPending = false;
 let playerPopupMonitor = 0;
+let sitePlaybackAttempt = 0;
+let siteStartupTimer = 0;
+let sitePlaybackTimedOut = false;
+
+function clearSiteStartupTimer() {
+  window.clearTimeout(siteStartupTimer);
+  siteStartupTimer = 0;
+}
+
+function finishSitePlaybackAttempt(attempt) {
+  if (attempt !== sitePlaybackAttempt) return;
+  clearSiteStartupTimer();
+  sitePlayPending = false;
+  sendPlayerState();
+}
+
+function loadFreshSiteStream() {
+  siteAudio.pause();
+  siteAudio.src = SITE_STREAM_URL + "?session=" + Date.now().toString(36);
+  siteAudio.load();
+  sitePlaybackTimedOut = false;
+}
+
+function stopSiteAudio() {
+  sitePlaybackAttempt += 1;
+  clearSiteStartupTimer();
+  sitePlayPending = false;
+  sitePlaybackTimedOut = false;
+  siteAudio.pause();
+  sendPlayerState();
+}
 
 function watchPlayerWindow() {
   window.clearInterval(playerPopupMonitor);
   playerPopupMonitor = window.setInterval(function () {
     if (!playerPopup || !playerPopup.closed) return;
-    siteAudio.pause();
+    stopSiteAudio();
     playerPopup = null;
     window.clearInterval(playerPopupMonitor);
     playerPopupMonitor = 0;
@@ -43,31 +76,64 @@ function sendPlayerState() {
       playing: !siteAudio.paused && !siteAudio.ended,
       pending: sitePlayPending,
       volume: siteAudio.volume,
-      error: Boolean(siteAudio.error)
+      error: Boolean(siteAudio.error) || sitePlaybackTimedOut
     }, PLAYER_ORIGIN);
   } catch (_) {}
 }
 
-async function startSiteAudio() {
+function startSiteAudio() {
   if (sitePlayPending || !siteAudio.paused) {
     sendPlayerState();
     return;
   }
 
+  if (!siteAudio.src || sitePlaybackTimedOut || siteAudio.error) loadFreshSiteStream();
+
+  const attempt = ++sitePlaybackAttempt;
   sitePlayPending = true;
   sendPlayerState();
+
+  siteStartupTimer = window.setTimeout(function () {
+    if (attempt !== sitePlaybackAttempt || !sitePlayPending) return;
+    sitePlaybackTimedOut = true;
+    finishSitePlaybackAttempt(attempt);
+    showToast("Le direct tarde à répondre — touchez le bouton rouge du player");
+  }, SITE_STARTUP_TIMEOUT_MS);
+
+  let playResult;
   try {
-    await siteAudio.play();
+    playResult = siteAudio.play();
   } catch (_) {
+    sitePlaybackTimedOut = true;
     showToast("Touchez le bouton rouge du player pour écouter");
-  } finally {
-    sitePlayPending = false;
-    sendPlayerState();
+    finishSitePlaybackAttempt(attempt);
+    return;
   }
+
+  Promise.resolve(playResult).then(function () {
+    finishSitePlaybackAttempt(attempt);
+  }).catch(function () {
+    if (attempt !== sitePlaybackAttempt) return;
+    sitePlaybackTimedOut = true;
+    showToast("Touchez le bouton rouge du player pour écouter");
+    finishSitePlaybackAttempt(attempt);
+  });
 }
 
-["playing", "pause", "waiting", "stalled", "error", "volumechange"].forEach(function (eventName) {
+["pause", "waiting", "stalled", "volumechange"].forEach(function (eventName) {
   siteAudio.addEventListener(eventName, sendPlayerState);
+});
+
+siteAudio.addEventListener("playing", function () {
+  sitePlaybackTimedOut = false;
+  finishSitePlaybackAttempt(sitePlaybackAttempt);
+  sendPlayerState();
+});
+
+siteAudio.addEventListener("error", function () {
+  sitePlaybackTimedOut = true;
+  finishSitePlaybackAttempt(sitePlaybackAttempt);
+  sendPlayerState();
 });
 
 window.addEventListener("message", function (event) {
@@ -80,10 +146,10 @@ window.addEventListener("message", function (event) {
   } else if (message.action === "play") {
     startSiteAudio();
   } else if (message.action === "pause") {
-    siteAudio.pause();
+    stopSiteAudio();
   } else if (message.action === "toggle") {
     if (siteAudio.paused) startSiteAudio();
-    else siteAudio.pause();
+    else stopSiteAudio();
   } else if (message.action === "volume") {
     const numeric = Number(message.value);
     if (Number.isFinite(numeric)) siteAudio.volume = Math.max(0, Math.min(1, numeric));
@@ -247,6 +313,32 @@ document.querySelectorAll("[data-share-player]").forEach(function (button) {
     }
   });
 });
+
+if (contactForm) {
+  contactForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!contactForm.reportValidity()) return;
+
+    const fields = new FormData(contactForm);
+    const name = String(fields.get("name") || "").trim().slice(0, 100);
+    const email = String(fields.get("email") || "").trim().slice(0, 160);
+    const subject = String(fields.get("subject") || "").trim().slice(0, 140);
+    const message = String(fields.get("message") || "").trim().slice(0, 1500);
+    const mailSubject = "[Site Radio Stars] " + subject;
+    const mailBody = [
+      "Nom : " + name,
+      "E-mail : " + email,
+      "",
+      message
+    ].join("\n");
+
+    showToast("Votre messagerie va s’ouvrir");
+    window.location.href = "mailto:info@radiostars.be?subject="
+      + encodeURIComponent(mailSubject)
+      + "&body="
+      + encodeURIComponent(mailBody);
+  });
+}
 
 const year = document.querySelector("#year");
 if (year) year.textContent = String(new Date().getFullYear());
