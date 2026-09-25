@@ -26,6 +26,9 @@
     <meta name="twitter:description" content="Écoutez Radio Stars en direct.">
     <meta name="twitter:image" content="https://dabeatisflo.github.io/radio-stars/player/logo.png">
     <link rel="canonical" href="https://dabeatisflo.github.io/radio-stars/player/">
+    <link rel="alternate" hreflang="fr-BE" href="https://dabeatisflo.github.io/radio-stars/player/?lang=fr">
+    <link rel="alternate" hreflang="nl-BE" href="https://dabeatisflo.github.io/radio-stars/player/?lang=nl">
+    <link rel="alternate" hreflang="en" href="https://dabeatisflo.github.io/radio-stars/player/?lang=en">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./logo.png">
     <link rel="stylesheet" href="./styles.v11.css">
@@ -37,6 +40,12 @@
         <div class="topbar">
           <span class="live-pill"><span class="live-dot" aria-hidden="true"></span> En direct</span>
           <span class="independent-pill">Player officiel</span>
+        </div>
+        <div class="player-language-row">
+          <label class="sr-only" for="player-language">Choisir la langue</label>
+          <select id="player-language" aria-label="Choisir la langue">
+            <option value="fr">FR</option><option value="nl">NL</option><option value="en">EN</option>
+          </select>
         </div>
 
         <div class="brand">
@@ -111,7 +120,7 @@
              target="_blank" rel="noopener noreferrer">Gmail</a>
           <a class="share-option" id="outlook-share" href="https://outlook.live.com/"
              target="_blank" rel="noopener noreferrer">Outlook</a>
-          <a class="share-option" id="email-share" href="mailto:">E-mailprogramma</a>
+          <a class="share-option" id="email-share" href="mailto:">Messagerie</a>
           <a class="share-option" id="sms-share" href="sms:">SMS</a>
           <a class="share-option" id="x-share" href="https://twitter.com/"
              target="_blank" rel="noopener noreferrer">X</a>

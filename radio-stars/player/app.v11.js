@@ -41,6 +41,186 @@ let remoteFailed = false;
 let shareReturnFocus = null;
 
 const query = new URLSearchParams(location.search);
+const playerLanguage = document.querySelector("#player-language");
+function normalizeLocale(value) {
+  const code = String(value || "").toLowerCase().trim().replace("_", "-").split("-")[0];
+  return ["fr", "nl", "en"].includes(code) ? code : null;
+}
+let storedLanguage = null;
+try { storedLanguage = normalizeLocale(localStorage.getItem("radioStarsLocale")); } catch (_) {}
+const activeLocale = normalizeLocale(query.get("lang")) || storedLanguage || normalizeLocale(navigator.language) || "fr";
+try { localStorage.setItem("radioStarsLocale", activeLocale); } catch (_) {}
+document.documentElement.lang = activeLocale;
+playerLanguage.value = activeLocale;
+playerLanguage.addEventListener("change", function () {
+  const selected = normalizeLocale(playerLanguage.value) || "fr";
+  try { localStorage.setItem("radioStarsLocale", selected); } catch (_) {}
+  const destination = new URL(location.href);
+  destination.searchParams.set("lang", selected);
+  location.assign(destination.href);
+});
+
+const TRANSLATIONS = {
+  "nl": {
+    "Le Player — Radio Stars": "De speler — Radio Stars",
+    "En direct": "Live",
+    "Player officiel": "Officiële speler",
+    "En ligne": "Online",
+    "Prêt à écouter": "Klaar om te luisteren",
+    "Appuyez sur le bouton rouge pour lancer le direct.": "Druk op de rode knop om de live-uitzending te starten.",
+    "Partager": "Delen",
+    "Le site": "De website",
+    "Ce player fonctionne indépendamment du site principal. Une connexion internet est nécessaire.": "Deze speler werkt onafhankelijk van de hoofdwebsite. Je hebt een internetverbinding nodig.",
+    "Radio Stars sur Facebook": "Radio Stars op Facebook",
+    "© 2026 Poignie Floris. Tous droits réservés. Conception et code soumis à autorisation écrite.": "© 2026 Poignie Floris. Alle rechten voorbehouden. Voor ontwerp en code is schriftelijke toestemming vereist.",
+    "JavaScript doit être activé pour utiliser le player.": "Schakel JavaScript in om de speler te gebruiken.",
+    "Partager le player": "De speler delen",
+    "Envoyez le lien officiel pour écouter Radio Stars partout.": "Deel de officiële link om overal naar Radio Stars te luisteren.",
+    "Copier": "Kopiëren",
+    "Messagerie": "E-mailprogramma",
+    "Plus d’applications…": "Meer apps…",
+    "Écouter Radio Stars": "Luister naar Radio Stars",
+    "Mettre Radio Stars en pause": "Radio Stars pauzeren",
+    "Fermer le partage": "Deelvenster sluiten",
+    "Fermer": "Sluiten",
+    "Lien du player Radio Stars": "Link naar de Radio Stars-speler",
+    "Écoutez Radio Stars 98.5 FM et DAB+ en direct. Le player officiel, autonome et partageable.": "Luister live naar Radio Stars via 98.5 FM en DAB+. De officiële, zelfstandige speler die je kunt delen.",
+    "Radio Stars — Le Player": "Radio Stars — De speler",
+    "Écoutez Radio Stars 98.5 FM et DAB+ en direct.": "Luister live naar Radio Stars op 98.5 FM en via DAB+.",
+    "Écoutez Radio Stars en direct.": "Luister live naar Radio Stars.",
+    "En direct — Radio Stars": "Live — Radio Stars",
+    "Vous êtes hors ligne": "Je bent offline",
+    "Vérifiez votre connexion internet.": "Controleer je internetverbinding.",
+    "Touchez pour écouter": "Tik om te luisteren",
+    "Votre navigateur bloque le son automatique. Le bouton rouge lance immédiatement la radio.": "Je browser blokkeert automatisch geluid. Tik op de rode knop om de radio te starten.",
+    "Touchez à nouveau pour écouter": "Tik opnieuw om te luisteren",
+    "La connexion a été interrompue. Réessayez avec le bouton rouge.": "De verbinding is onderbroken. Probeer het opnieuw met de rode knop.",
+    "Démarrage du direct…": "Live-uitzending wordt gestart…",
+    "Connexion…": "Verbinden…",
+    "Radio Stars se lance automatiquement.": "Radio Stars start automatisch.",
+    "Le direct va démarrer dans un instant.": "De live-uitzending begint zo.",
+    "Le direct tarde à répondre. Le bouton rouge relance une nouvelle connexion.": "De live-uitzending reageert traag. Met de rode knop maak je opnieuw verbinding.",
+    "Connexion au direct…": "Verbinden met de live-uitzending…",
+    "La lecture démarre avec votre clic.": "Het afspelen start zodra je klikt.",
+    "Vous écoutez Radio Stars": "Je luistert naar Radio Stars",
+    "Le direct 98.5 FM est en cours.": "De live-uitzending op 98.5 FM speelt.",
+    "Le bouton rouge relance directement la radio.": "Met de rode knop start je de radio opnieuw.",
+    "Lecture en pause": "Afspelen gepauzeerd",
+    "Appuyez sur le bouton rouge pour reprendre.": "Druk op de rode knop om verder te luisteren.",
+    "Quelques secondes peuvent être nécessaires.": "Dit kan enkele seconden duren.",
+    "Reconnexion…": "Opnieuw verbinden…",
+    "Le lecteur cherche à retrouver le direct.": "De speler probeert opnieuw verbinding te maken met de live-uitzending.",
+    "Le direct est momentanément indisponible": "De live-uitzending is tijdelijk niet beschikbaar",
+    "Patientez quelques secondes puis réessayez.": "Wacht enkele seconden en probeer het opnieuw.",
+    "Écoutez Radio Stars en direct : ": "Luister live naar Radio Stars: ",
+    "Radio Stars 98.5 FM — en direct": "Radio Stars 98.5 FM — live",
+    "Lien du player copié": "Link naar de speler gekopieerd",
+    "Le lien est sélectionné — choisissez Copier": "De link is geselecteerd — kies Kopiëren",
+    "Lien copié — collez-le dans TikTok": "Link gekopieerd — plak hem in TikTok",
+    "Lien prêt — choisissez TikTok": "Link klaar — kies TikTok",
+    "Utilisez Copier, WhatsApp ou Facebook": "Gebruik Kopiëren, WhatsApp of Facebook",
+    "Lien copié — collez-le dans un message TikTok.": "Link gekopieerd — plak hem in een TikTok-bericht.",
+    "Sélectionnez le lien, copiez-le puis collez-le dans TikTok.": "Selecteer de link, kopieer hem en plak hem in TikTok.",
+    "Radio Stars — En direct": "Radio Stars — Live",
+    "Choisir la langue": "Kies een taal"
+  },
+  "en": {
+    "Le Player — Radio Stars": "The Player — Radio Stars",
+    "En direct": "Live",
+    "Player officiel": "Official player",
+    "En ligne": "Online",
+    "Prêt à écouter": "Ready to listen",
+    "Appuyez sur le bouton rouge pour lancer le direct.": "Press the red button to start the live stream.",
+    "Partager": "Share",
+    "Le site": "The website",
+    "Ce player fonctionne indépendamment du site principal. Une connexion internet est nécessaire.": "This player works independently of the main website. An internet connection is required.",
+    "Radio Stars sur Facebook": "Radio Stars on Facebook",
+    "© 2026 Poignie Floris. Tous droits réservés. Conception et code soumis à autorisation écrite.": "© 2026 Poignie Floris. All rights reserved. Written permission is required to use the design and code.",
+    "JavaScript doit être activé pour utiliser le player.": "Enable JavaScript to use the player.",
+    "Partager le player": "Share the player",
+    "Envoyez le lien officiel pour écouter Radio Stars partout.": "Share the official link to listen to Radio Stars anywhere.",
+    "Copier": "Copy",
+    "Messagerie": "Email app",
+    "Plus d’applications…": "More apps…",
+    "Écouter Radio Stars": "Listen to Radio Stars",
+    "Mettre Radio Stars en pause": "Pause Radio Stars",
+    "Fermer le partage": "Close sharing panel",
+    "Fermer": "Close",
+    "Lien du player Radio Stars": "Radio Stars player link",
+    "Écoutez Radio Stars 98.5 FM et DAB+ en direct. Le player officiel, autonome et partageable.": "Listen to Radio Stars live on 98.5 FM and DAB+. The official standalone player, ready to share.",
+    "Radio Stars — Le Player": "Radio Stars — The Player",
+    "Écoutez Radio Stars 98.5 FM et DAB+ en direct.": "Listen to Radio Stars live on 98.5 FM and DAB+.",
+    "Écoutez Radio Stars en direct.": "Listen to Radio Stars live.",
+    "En direct — Radio Stars": "Live — Radio Stars",
+    "Vous êtes hors ligne": "You are offline",
+    "Vérifiez votre connexion internet.": "Check your internet connection.",
+    "Touchez pour écouter": "Tap to listen",
+    "Votre navigateur bloque le son automatique. Le bouton rouge lance immédiatement la radio.": "Your browser blocks automatic audio. Tap the red button to start the radio.",
+    "Touchez à nouveau pour écouter": "Tap again to listen",
+    "La connexion a été interrompue. Réessayez avec le bouton rouge.": "The connection was interrupted. Try again with the red button.",
+    "Démarrage du direct…": "Starting live stream…",
+    "Connexion…": "Connecting…",
+    "Radio Stars se lance automatiquement.": "Radio Stars is starting automatically.",
+    "Le direct va démarrer dans un instant.": "The live stream will start shortly.",
+    "Le direct tarde à répondre. Le bouton rouge relance une nouvelle connexion.": "The live stream is taking a while to respond. Press the red button to reconnect.",
+    "Connexion au direct…": "Connecting to the live stream…",
+    "La lecture démarre avec votre clic.": "Playback starts when you click.",
+    "Vous écoutez Radio Stars": "You are listening to Radio Stars",
+    "Le direct 98.5 FM est en cours.": "The live 98.5 FM broadcast is playing.",
+    "Le bouton rouge relance directement la radio.": "Press the red button to restart the radio.",
+    "Lecture en pause": "Playback paused",
+    "Appuyez sur le bouton rouge pour reprendre.": "Press the red button to resume.",
+    "Quelques secondes peuvent être nécessaires.": "This may take a few seconds.",
+    "Reconnexion…": "Reconnecting…",
+    "Le lecteur cherche à retrouver le direct.": "The player is trying to reconnect to the live stream.",
+    "Le direct est momentanément indisponible": "The live stream is temporarily unavailable",
+    "Patientez quelques secondes puis réessayez.": "Wait a few seconds and try again.",
+    "Écoutez Radio Stars en direct : ": "Listen to Radio Stars live: ",
+    "Radio Stars 98.5 FM — en direct": "Radio Stars 98.5 FM — live",
+    "Lien du player copié": "Player link copied",
+    "Le lien est sélectionné — choisissez Copier": "The link is selected — choose Copy",
+    "Lien copié — collez-le dans TikTok": "Link copied — paste it into TikTok",
+    "Lien prêt — choisissez TikTok": "Link ready — choose TikTok",
+    "Utilisez Copier, WhatsApp ou Facebook": "Use Copy, WhatsApp or Facebook",
+    "Lien copié — collez-le dans un message TikTok.": "Link copied — paste it into a TikTok message.",
+    "Sélectionnez le lien, copiez-le puis collez-le dans TikTok.": "Select the link, copy it and paste it into TikTok.",
+    "Radio Stars — En direct": "Radio Stars — Live",
+    "Choisir la langue": "Choose a language"
+  }
+};
+
+function t(value) {
+  return (TRANSLATIONS[activeLocale] || {})[value] || value;
+}
+
+function translateDocument() {
+  if (activeLocale === "fr") return;
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.parentElement && node.parentElement.closest("script, style, svg, noscript")) continue;
+    const raw = node.nodeValue;
+    const key = raw.replace(/\s+/g, " ").trim();
+    if (!key || !TRANSLATIONS[activeLocale][key]) continue;
+    const before = raw.match(/^\s*/)[0];
+    const after = raw.match(/\s*$/)[0];
+    node.nodeValue = before + t(key) + after;
+  }
+  document.querySelectorAll("[aria-label], [placeholder], [title]").forEach(function (element) {
+    ["aria-label", "placeholder", "title"].forEach(function (attr) {
+      if (element.hasAttribute(attr)) element.setAttribute(attr, t(element.getAttribute(attr)));
+    });
+  });
+  document.querySelectorAll("meta[name='description'], meta[name='copyright'], meta[property^='og:'], meta[name^='twitter:']").forEach(function (element) {
+    if (element.hasAttribute("content")) element.setAttribute("content", t(element.getAttribute("content")));
+  });
+  const ogLocale = document.querySelector("meta[property='og:locale']");
+  if (ogLocale) ogLocale.content = activeLocale === "nl" ? "nl_BE" : "en_GB";
+  document.title = t(document.title);
+}
+
+translateDocument();
+
 const allowedRemoteOrigins = Object.freeze([location.origin]);
 
 let remoteOrigin = null;
@@ -89,9 +269,9 @@ function setStatus(title, detail, tone) {
 
 function setPlaying(isPlaying) {
   playButton.dataset.state = isPlaying ? "playing" : "paused";
-  playButton.setAttribute("aria-label", isPlaying ? "Mettre Radio Stars en pause" : "Écouter Radio Stars");
+  playButton.setAttribute("aria-label", isPlaying ? t("Mettre Radio Stars en pause") : t("Écouter Radio Stars"));
   playButton.setAttribute("aria-pressed", String(isPlaying));
-  document.title = isPlaying ? "En direct — Radio Stars" : "Le Player — Radio Stars";
+  document.title = isPlaying ? t("En direct — Radio Stars") : t("Le Player — Radio Stars");
 }
 
 function showToast(message) {
@@ -140,16 +320,16 @@ function showPlaybackFailure(error, automatic) {
   setPlaying(false);
   playbackTimedOut = true;
   if (!navigator.onLine) {
-    setStatus("Vous êtes hors ligne", "Vérifiez votre connexion internet.", "error");
+    setStatus(t("Vous êtes hors ligne"), t("Vérifiez votre connexion internet."), "error");
   } else if (automatic && error && error.name === "NotAllowedError") {
     setStatus(
-      "Touchez pour écouter",
-      "Votre navigateur bloque le son automatique. Le bouton rouge lance immédiatement la radio."
+      t("Touchez pour écouter"),
+      t("Votre navigateur bloque le son automatique. Le bouton rouge lance immédiatement la radio.")
     );
   } else {
     setStatus(
-      "Touchez à nouveau pour écouter",
-      "La connexion a été interrompue. Réessayez avec le bouton rouge.",
+      t("Touchez à nouveau pour écouter"),
+      t("La connexion a été interrompue. Réessayez avec le bouton rouge."),
       "error"
     );
   }
@@ -164,10 +344,10 @@ function startPlayback(automatic) {
   playPending = true;
   playButton.setAttribute("aria-busy", "true");
   setStatus(
-    automatic ? "Démarrage du direct…" : "Connexion…",
+    automatic ? t("Démarrage du direct…") : t("Connexion…"),
     automatic
-      ? "Radio Stars se lance automatiquement."
-      : "Le direct va démarrer dans un instant."
+      ? t("Radio Stars se lance automatiquement.")
+      : t("Le direct va démarrer dans un instant.")
   );
 
   startupTimer = window.setTimeout(function () {
@@ -177,8 +357,8 @@ function startPlayback(automatic) {
     if (audio.paused) {
       setPlaying(false);
       setStatus(
-        "Touchez pour écouter",
-        "Le direct tarde à répondre. Le bouton rouge relance une nouvelle connexion.",
+        t("Touchez pour écouter"),
+        t("Le direct tarde à répondre. Le bouton rouge relance une nouvelle connexion."),
         "error"
       );
     }
@@ -239,16 +419,16 @@ window.addEventListener("message", function (event) {
 
   if (state.pending) {
     setPlaying(false);
-    setStatus("Connexion au direct…", "La lecture démarre avec votre clic.");
+    setStatus(t("Connexion au direct…"), t("La lecture démarre avec votre clic."));
   } else if (state.playing) {
     setPlaying(true);
-    setStatus("Vous écoutez Radio Stars", "Le direct 98.5 FM est en cours.");
+    setStatus(t("Vous écoutez Radio Stars"), t("Le direct 98.5 FM est en cours."));
   } else if (remoteFailed) {
     setPlaying(false);
-    setStatus("Touchez pour écouter", "Le bouton rouge relance directement la radio.", "error");
+    setStatus(t("Touchez pour écouter"), t("Le bouton rouge relance directement la radio."), "error");
   } else {
     setPlaying(false);
-    setStatus("Lecture en pause", "Appuyez sur le bouton rouge pour reprendre.");
+    setStatus(t("Lecture en pause"), t("Appuyez sur le bouton rouge pour reprendre."));
   }
 });
 
@@ -256,20 +436,20 @@ audio.addEventListener("playing", function () {
   playbackTimedOut = false;
   finishPlaybackAttempt(playbackAttempt);
   setPlaying(true);
-  setStatus("Vous écoutez Radio Stars", "Le direct 98.5 FM est en cours.");
+  setStatus(t("Vous écoutez Radio Stars"), t("Le direct 98.5 FM est en cours."));
 });
 
 audio.addEventListener("pause", function () {
   setPlaying(false);
-  if (!audio.error) setStatus("Lecture en pause", "Appuyez sur le bouton rouge pour reprendre.");
+  if (!audio.error) setStatus(t("Lecture en pause"), t("Appuyez sur le bouton rouge pour reprendre."));
 });
 
 audio.addEventListener("waiting", function () {
-  setStatus("Connexion au direct…", "Quelques secondes peuvent être nécessaires.");
+  setStatus(t("Connexion au direct…"), t("Quelques secondes peuvent être nécessaires."));
 });
 
 audio.addEventListener("stalled", function () {
-  setStatus("Reconnexion…", "Le lecteur cherche à retrouver le direct.");
+  setStatus(t("Reconnexion…"), t("Le lecteur cherche à retrouver le direct."));
 });
 
 audio.addEventListener("error", function () {
@@ -277,29 +457,29 @@ audio.addEventListener("error", function () {
   finishPlaybackAttempt(playbackAttempt);
   setPlaying(false);
   setStatus(
-    "Le direct est momentanément indisponible",
-    "Patientez quelques secondes puis réessayez.",
+    t("Le direct est momentanément indisponible"),
+    t("Patientez quelques secondes puis réessayez."),
     "error"
   );
 });
 
 window.addEventListener("offline", function () {
-  setStatus("Vous êtes hors ligne", "Vérifiez votre connexion internet.", "error");
+  setStatus(t("Vous êtes hors ligne"), t("Vérifiez votre connexion internet."), "error");
 });
 
 window.addEventListener("online", function () {
-  if (audio.paused) setStatus("Prêt à écouter", "Appuyez sur le bouton rouge pour lancer le direct.");
+  if (audio.paused) setStatus(t("Prêt à écouter"), t("Appuyez sur le bouton rouge pour lancer le direct."));
 });
 
 function openSharePanel() {
   shareReturnFocus = document.activeElement;
-  shareUrlField.value = SHARE_URL;
+  shareUrlField.value = SHARE_URL + "?lang=" + activeLocale;
   shareFeedback.hidden = true;
-  const shareText = "Écoutez Radio Stars en direct : " + SHARE_URL;
-  const shortText = "Écoutez Radio Stars en direct.";
-  const emailSubject = "Radio Stars 98.5 FM — en direct";
+  const shareText = t("Écoutez Radio Stars en direct : ") + SHARE_URL + "?lang=" + activeLocale;
+  const shortText = t("Écoutez Radio Stars en direct.");
+  const emailSubject = t("Radio Stars 98.5 FM — en direct");
   whatsappShare.href = "https://wa.me/?text=" + encodeURIComponent(shareText);
-  facebookShare.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SHARE_URL);
+  facebookShare.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrlField.value);
   emailShare.href = "mailto:?subject=" + encodeURIComponent(emailSubject)
     + "&body=" + encodeURIComponent(shareText);
   gmailShare.href = "https://mail.google.com/mail/?view=cm&fs=1&su=" + encodeURIComponent(emailSubject)
@@ -309,7 +489,7 @@ function openSharePanel() {
   const smsSeparator = /iPad|iPhone|iPod/.test(navigator.userAgent || "") ? "&" : "?";
   smsShare.href = "sms:" + smsSeparator + "body=" + encodeURIComponent(shareText);
   xShare.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText);
-  telegramShare.href = "https://t.me/share/url?url=" + encodeURIComponent(SHARE_URL)
+  telegramShare.href = "https://t.me/share/url?url=" + encodeURIComponent(shareUrlField.value)
     + "&text=" + encodeURIComponent(shortText);
   nativeShareButton.hidden = typeof navigator.share !== "function";
   sharePanel.hidden = false;
@@ -327,7 +507,7 @@ async function copyShareLink() {
   let copied = false;
   if (navigator.clipboard && window.isSecureContext) {
     try {
-      await navigator.clipboard.writeText(SHARE_URL);
+      await navigator.clipboard.writeText(shareUrlField.value);
       copied = true;
     } catch (_) {}
   }
@@ -341,8 +521,8 @@ async function copyShareLink() {
     } catch (_) {}
   }
 
-  const message = copied ? "Lien du player copié" : "Le lien est sélectionné — choisissez Copier";
-  shareFeedback.textContent = message;
+  const message = copied ? t("Lien du player copié") : t("Le lien est sélectionné — choisissez Copier");
+  shareFeedback.textContent = t(message);
   shareFeedback.hidden = false;
   showToast(message);
   return copied;
@@ -358,19 +538,19 @@ sharePanel.querySelectorAll("[data-share-close]").forEach(function (button) {
 async function shareWithDevice(tiktokRequested) {
   if (typeof navigator.share !== "function") {
     await copyShareLink();
-    if (tiktokRequested) showToast("Lien copié — collez-le dans TikTok");
+    if (tiktokRequested) showToast(t("Lien copié — collez-le dans TikTok"));
     return;
   }
 
   try {
     await navigator.share({
       title: "Radio Stars 98.5 FM",
-      text: "Écoutez Radio Stars en direct.",
-      url: SHARE_URL
+      text: t("Écoutez Radio Stars en direct."),
+      url: shareUrlField.value
     });
   } catch (error) {
     if (!error || error.name !== "AbortError") {
-      showToast(tiktokRequested ? "Lien prêt — choisissez TikTok" : "Utilisez Copier, WhatsApp ou Facebook");
+      showToast(tiktokRequested ? t("Lien prêt — choisissez TikTok") : t("Utilisez Copier, WhatsApp ou Facebook"));
     }
   }
 }
@@ -386,9 +566,9 @@ tiktokShareButton.addEventListener("click", function (event) {
 
   copyShareLink().then(function (copied) {
     const message = copied
-      ? "Lien copié — collez-le dans un message TikTok."
-      : "Sélectionnez le lien, copiez-le puis collez-le dans TikTok.";
-    shareFeedback.textContent = message;
+      ? t("Lien copié — collez-le dans un message TikTok.")
+      : t("Sélectionnez le lien, copiez-le puis collez-le dans TikTok.");
+    shareFeedback.textContent = t(message);
     shareFeedback.hidden = false;
     showToast(message);
   });
@@ -401,7 +581,7 @@ window.addEventListener("keydown", function (event) {
 if ("mediaSession" in navigator) {
   try {
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: "Radio Stars — En direct",
+      title: t("Radio Stars — En direct"),
       artist: "98.5 FM · DAB+",
       album: "Radio Stars",
       artwork: [
@@ -415,7 +595,7 @@ if ("mediaSession" in navigator) {
 
 if (remoteOrigin) {
   setPlaying(true);
-  setStatus("Vous écoutez Radio Stars", "Le direct 98.5 FM est en cours.");
+  setStatus(t("Vous écoutez Radio Stars"), t("Le direct 98.5 FM est en cours."));
   sendRemoteCommand("state");
 } else if (query.get("autoplay") !== "0") {
   startPlayback(true);
