@@ -190,8 +190,8 @@ document.querySelectorAll("[data-player]").forEach(function (link) {
     startSiteAudio();
 
     const features = "popup=yes,width=460,height=720,resizable=yes,scrollbars=yes";
-    const destination = PLAYER_URL + "?remote=1";
-    const popup = window.open(destination, "radioStarsPlayer", features);
+    const destination = PLAYER_URL + "?remote=1&controller=" + encodeURIComponent(location.origin);
+    const popup = window.open(destination, "_blank", features);
     if (!popup) return;
 
     event.preventDefault();
