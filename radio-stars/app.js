@@ -2,6 +2,7 @@
 "use strict";
 
 const PLAYER_URL = "https://radio-stars-player.gzqlah8.chatgpt.site/";
+const PLAYER_ORIGIN = new URL(PLAYER_URL).origin;
 const AVAILABLE_LOCALES = Object.freeze(["fr"]);
 const KNOWN_LOCALES = Object.freeze(["fr", "nl", "en"]);
 
@@ -13,6 +14,69 @@ const languageTrigger = document.querySelector("#language-trigger");
 const languageOptions = Array.from(document.querySelectorAll("[data-language]"));
 const toast = document.querySelector("#toast");
 let toastTimer = 0;
+
+const siteAudio = new Audio();
+siteAudio.src = PLAYER_URL + "stream";
+siteAudio.preload = "none";
+siteAudio.playsInline = true;
+
+let playerPopup = null;
+let sitePlayPending = false;
+
+function sendPlayerState() {
+  if (!playerPopup || playerPopup.closed) return;
+  try {
+    playerPopup.postMessage({
+      type: "radio-stars-state",
+      playing: !siteAudio.paused && !siteAudio.ended,
+      pending: sitePlayPending,
+      volume: siteAudio.volume,
+      error: Boolean(siteAudio.error)
+    }, PLAYER_ORIGIN);
+  } catch (_) {}
+}
+
+async function startSiteAudio() {
+  if (sitePlayPending || !siteAudio.paused) {
+    sendPlayerState();
+    return;
+  }
+
+  sitePlayPending = true;
+  sendPlayerState();
+  try {
+    await siteAudio.play();
+  } catch (_) {
+    showToast("Touchez le bouton rouge du player pour écouter");
+  } finally {
+    sitePlayPending = false;
+    sendPlayerState();
+  }
+}
+
+["playing", "pause", "waiting", "stalled", "error", "volumechange"].forEach(function (eventName) {
+  siteAudio.addEventListener(eventName, sendPlayerState);
+});
+
+window.addEventListener("message", function (event) {
+  if (event.origin !== PLAYER_ORIGIN || event.source !== playerPopup) return;
+  const message = event.data;
+  if (!message || message.type !== "radio-stars-command") return;
+
+  if (message.action === "state") {
+    sendPlayerState();
+  } else if (message.action === "play") {
+    startSiteAudio();
+  } else if (message.action === "pause") {
+    siteAudio.pause();
+  } else if (message.action === "toggle") {
+    if (siteAudio.paused) startSiteAudio();
+    else siteAudio.pause();
+  } else if (message.action === "volume") {
+    const numeric = Number(message.value);
+    if (Number.isFinite(numeric)) siteAudio.volume = Math.max(0, Math.min(1, numeric));
+  }
+});
 
 function normalizeLocale(value) {
   const normalized = String(value || "").trim().toLowerCase().replace("_", "-").split("-")[0];
@@ -123,13 +187,15 @@ document.addEventListener("keydown", function (event) {
 
 document.querySelectorAll("[data-player]").forEach(function (link) {
   link.addEventListener("click", function (event) {
+    startSiteAudio();
+
     const features = "popup=yes,width=460,height=720,resizable=yes,scrollbars=yes";
-    const destination = link.href || (PLAYER_URL + "?autoplay=1");
+    const destination = PLAYER_URL + "?remote=1";
     const popup = window.open(destination, "radioStarsPlayer", features);
     if (!popup) return;
 
     event.preventDefault();
-    try { popup.opener = null; } catch (_) {}
+    playerPopup = popup;
     try { popup.focus(); } catch (_) {}
   });
 });
