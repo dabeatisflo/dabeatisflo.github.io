@@ -22,6 +22,18 @@ siteAudio.playsInline = true;
 
 let playerPopup = null;
 let sitePlayPending = false;
+let playerPopupMonitor = 0;
+
+function watchPlayerWindow() {
+  window.clearInterval(playerPopupMonitor);
+  playerPopupMonitor = window.setInterval(function () {
+    if (!playerPopup || !playerPopup.closed) return;
+    siteAudio.pause();
+    playerPopup = null;
+    window.clearInterval(playerPopupMonitor);
+    playerPopupMonitor = 0;
+  }, 400);
+}
 
 function sendPlayerState() {
   if (!playerPopup || playerPopup.closed) return;
@@ -196,6 +208,7 @@ document.querySelectorAll("[data-player]").forEach(function (link) {
 
     event.preventDefault();
     playerPopup = popup;
+    watchPlayerWindow();
     try { popup.focus(); } catch (_) {}
   });
 });
