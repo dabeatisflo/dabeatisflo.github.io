@@ -31,7 +31,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./logo.svg">
     <link rel="manifest" href="./site.webmanifest">
-    <link rel="stylesheet" href="./styles.v9.css">
+    <link rel="stylesheet" href="./styles.v11.css">
     <title>Radio Stars 98.5 FM — Appréciez la différence</title>
   </head>
   <body>
@@ -53,6 +53,8 @@
           <div class="nav-links">
             <a class="nav-link" href="#accueil">Accueil</a>
             <a class="nav-link" href="#radio">La radio</a>
+            <a class="nav-link" href="#video">Vidéo</a>
+            <a class="nav-link" href="#application">Application</a>
             <a class="nav-link" href="#programmes">Programmes</a>
             <a class="nav-link" href="#communaute">Communauté</a>
             <a class="nav-link" href="#contact">Contact</a>
@@ -212,6 +214,87 @@
           <div class="frequency-display" aria-label="Radio Stars sur 98.5 FM et DAB plus">
             <strong>98.5</strong>
             <span>FM · DAB+ · En ligne</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="video-live section" id="video" aria-labelledby="video-title">
+        <div class="shell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Radio Stars TV</p>
+              <h2 id="video-title">Le direct, bientôt en images.</h2>
+            </div>
+            <p>
+              L’espace vidéo est prêt. Dès que le flux sera disponible,
+              vous pourrez suivre Radio Stars en direct ici.
+            </p>
+          </div>
+
+          <div class="video-stage" role="img" aria-label="Écran noir réservé au futur direct vidéo de Radio Stars">
+            <span class="video-status">Vidéo · bientôt</span>
+            <div class="video-placeholder">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="8" y="15" width="35" height="34" rx="7"></rect>
+                <path d="m43 26 13-7v26l-13-7Z"></path>
+              </svg>
+              <h3>Le direct vidéo arrive bientôt.</h3>
+              <p>Le flux vidéo n’est pas encore disponible.</p>
+            </div>
+            <span class="video-corner">Radio Stars · 98.5 FM</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-section section" id="application" aria-labelledby="application-title">
+        <div class="shell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow red">L’application Radio Stars</p>
+              <h2 id="application-title">Le bon téléchargement pour votre téléphone.</h2>
+            </div>
+            <p>
+              Cette page reconnaît automatiquement Android ou iPhone/iPad et met en avant
+              la version adaptée. Les liens seront activés dès que les applications seront prêtes.
+            </p>
+          </div>
+
+          <div class="app-detection" role="status" aria-live="polite">
+            <span class="app-detection-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"></rect><path d="M10 18h4"></path></svg>
+            </span>
+            <span class="app-detection-copy">
+              <strong id="app-device-label">Détection de votre appareil…</strong>
+              <span id="app-device-help">Le téléchargement correspondant sera recommandé automatiquement.</span>
+            </span>
+          </div>
+
+          <div class="app-grid">
+            <article class="app-card" data-app-platform="android" data-recommended="false">
+              <div class="app-card-top">
+                <span class="app-platform-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M9 12h14v12a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3V12Z"></path><path d="M11 12a5 5 0 0 1 10 0M12 6l-2-3M20 6l2-3M6 14v8M26 14v8M13 27v3M19 27v3"></path></svg>
+                </span>
+                <span class="app-recommended-badge">Recommandé pour vous</span>
+              </div>
+              <span class="app-platform">Android · APK</span>
+              <h3>Application Android</h3>
+              <p>Le futur lien permettra de télécharger directement le fichier APK officiel de Radio Stars.</p>
+              <a class="button app-download-button" data-app-download="android" aria-disabled="true">Bientôt disponible</a>
+            </article>
+
+            <article class="app-card" data-app-platform="ios" data-recommended="false">
+              <div class="app-card-top">
+                <span class="app-platform-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><rect x="8" y="2" width="16" height="28" rx="4"></rect><path d="M13 6h6M14 26h4"></path></svg>
+                </span>
+                <span class="app-recommended-badge">Recommandé pour vous</span>
+              </div>
+              <span class="app-platform">iPhone · iPad</span>
+              <h3>Application iOS</h3>
+              <p>Le futur lien dirigera les utilisateurs d’iPhone et d’iPad vers le téléchargement officiel.</p>
+              <a class="button app-download-button" data-app-download="ios" aria-disabled="true">Bientôt disponible</a>
+            </article>
           </div>
         </div>
       </section>
@@ -382,6 +465,8 @@
         </a>
         <nav class="footer-links" aria-label="Liens de bas de page">
           <a href="#radio">La radio</a>
+          <a href="#video">Vidéo</a>
+          <a href="#application">Application</a>
           <a href="#programmes">Programmes</a>
           <a href="#contact">Contact</a>
           <a href="https://radio-stars-player.gzqlah8.chatgpt.site/?autoplay=1" target="_blank" rel="noopener noreferrer" data-player>Le player ↗</a>
@@ -395,6 +480,6 @@
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./app.v9.js" defer></script>
+    <script src="./app.v11.js" defer></script>
   </body>
 </html>

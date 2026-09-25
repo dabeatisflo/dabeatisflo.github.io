@@ -5,6 +5,7 @@ const PLAYER_URL = "https://radio-stars-player.gzqlah8.chatgpt.site/";
 const PLAYER_ORIGIN = new URL(PLAYER_URL).origin;
 const AVAILABLE_LOCALES = Object.freeze(["fr"]);
 const KNOWN_LOCALES = Object.freeze(["fr", "nl", "en"]);
+const APP_DOWNLOAD_URLS = Object.freeze({ android: "", ios: "" });
 
 const header = document.querySelector("#site-header");
 const menuToggle = document.querySelector("#menu-toggle");
@@ -13,6 +14,9 @@ const language = document.querySelector("#language");
 const languageTrigger = document.querySelector("#language-trigger");
 const languageOptions = Array.from(document.querySelectorAll("[data-language]"));
 const contactForm = document.querySelector("#contact-form");
+const appSection = document.querySelector("#application");
+const appDeviceLabel = document.querySelector("#app-device-label");
+const appDeviceHelp = document.querySelector("#app-device-help");
 const toast = document.querySelector("#toast");
 let toastTimer = 0;
 
@@ -203,6 +207,68 @@ function showToast(message) {
   }, 2800);
 }
 
+function detectMobilePlatform() {
+  const userAgent = String(navigator.userAgent || "");
+  const platform = String((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "");
+  const touchMac = /Mac/i.test(platform) && Number(navigator.maxTouchPoints || 0) > 1;
+
+  if (/Android/i.test(userAgent) || /Android/i.test(platform)) return "android";
+  if (/iPhone|iPad|iPod/i.test(userAgent) || touchMac) return "ios";
+  return "other";
+}
+
+function setupAppDownloads() {
+  if (!appSection) return;
+
+  const device = detectMobilePlatform();
+  appSection.dataset.device = device;
+
+  const messages = {
+    android: {
+      label: "Appareil Android détecté",
+      help: "La version APK sera automatiquement recommandée dès que son lien est disponible."
+    },
+    ios: {
+      label: "iPhone ou iPad détecté",
+      help: "La version iOS sera automatiquement recommandée dès que son lien est disponible."
+    },
+    other: {
+      label: "Vous consultez la page sur un ordinateur",
+      help: "Sur un téléphone, la page recommandera automatiquement Android ou iPhone/iPad."
+    }
+  };
+
+  if (appDeviceLabel) appDeviceLabel.textContent = messages[device].label;
+  if (appDeviceHelp) appDeviceHelp.textContent = messages[device].help;
+
+  document.querySelectorAll("[data-app-platform]").forEach(function (card) {
+    card.dataset.recommended = String(card.dataset.appPlatform === device);
+  });
+
+  document.querySelectorAll("[data-app-download]").forEach(function (link) {
+    const platformName = link.dataset.appDownload;
+    const downloadUrl = APP_DOWNLOAD_URLS[platformName];
+
+    if (downloadUrl) {
+      link.href = downloadUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("aria-disabled", "false");
+      link.textContent = platformName === "android" ? "Télécharger l’APK" : "Télécharger pour iPhone";
+      return;
+    }
+
+    link.removeAttribute("href");
+    link.setAttribute("aria-disabled", "true");
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      showToast("Le lien de téléchargement sera ajouté prochainement");
+    });
+  });
+}
+
+setupAppDownloads();
+
 function closeMenu() {
   header.dataset.menuOpen = "false";
   menuToggle.setAttribute("aria-expanded", "false");
@@ -221,7 +287,7 @@ navPanel.querySelectorAll("a[href^='#']").forEach(function (link) {
 });
 
 window.addEventListener("resize", function () {
-  if (window.innerWidth > 920) closeMenu();
+  if (window.innerWidth > 1040) closeMenu();
 });
 
 window.addEventListener("scroll", function () {
