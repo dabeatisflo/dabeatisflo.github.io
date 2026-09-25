@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /radio-stars/
+Sitemap: https://dabeatisflo.github.io/radio-stars/sitemap.xml
