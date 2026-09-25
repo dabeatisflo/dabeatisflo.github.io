@@ -535,7 +535,7 @@ function storedLocale() {
 
 function requestedLocale() {
   const query = normalizeLocale(new URLSearchParams(location.search).get("lang"));
-  return query || storedLocale() || browserLocale() || "fr";
+  return query || storedLocale() || "fr";
 }
 
 const detectedLocale = browserLocale();
@@ -693,14 +693,24 @@ document.addEventListener("keydown", function (event) {
 
 document.querySelectorAll("[data-player]").forEach(function (link) {
   link.addEventListener("click", function (event) {
-    startSiteAudio();
+    event.preventDefault();
+    stopSiteAudio();
+
+    const destination = PLAYER_URL + "?lang=" + activeLocale + "&autoplay=1";
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
+
+    if (isMobile) {
+      location.href = destination;
+      return;
+    }
 
     const features = "popup=yes,width=460,height=720,resizable=yes,scrollbars=yes";
-    const destination = PLAYER_URL + "?remote=1&controller=" + encodeURIComponent(location.origin) + "&lang=" + activeLocale;
     const popup = window.open(destination, "_blank", features);
-    if (!popup) return;
+    if (!popup) {
+      location.href = destination;
+      return;
+    }
 
-    event.preventDefault();
     playerPopup = popup;
     watchPlayerWindow();
     try { popup.focus(); } catch (_) {}
