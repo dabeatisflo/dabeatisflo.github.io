@@ -1,0 +1,19 @@
+{
+  "name": "Radio Stars 98.5 FM",
+  "short_name": "Radio Stars",
+  "description": "Le site officiel de Radio Stars à Havré — 98.5 FM, DAB+ et en ligne.",
+  "lang": "fr-BE",
+  "start_url": "/radio-stars/",
+  "scope": "/radio-stars/",
+  "display": "standalone",
+  "background_color": "#fff9f4",
+  "theme_color": "#ed0712",
+  "icons": [
+    {
+      "src": "./logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
