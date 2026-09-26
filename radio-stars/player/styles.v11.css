@@ -229,6 +229,29 @@ button, input { font: inherit; }
 
 .status[data-tone="error"] strong { color: var(--red-dark); }
 
+.now-playing {
+  margin: -2px 0 18px;
+  padding: 13px 15px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffaf8;
+}
+.now-playing-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--red-dark);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.now-playing strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .volume-row {
   display: grid;
   grid-template-columns: 22px 1fr 38px;
