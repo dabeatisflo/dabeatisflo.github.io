@@ -316,21 +316,21 @@ function finishPlaybackAttempt(attempt) {
   playButton.removeAttribute("aria-busy");
 }
 
+function streamUrl() {
+  return STREAM_PATH + "?session=" + Date.now().toString(36);
+}
+
 function loadFreshStream() {
   audio.pause();
-  audio.removeAttribute("src");
-  audio.load();
-  audio.src = STREAM_PATH + "?session=" + Date.now().toString(36);
+  audio.src = streamUrl();
   audio.preload = "auto";
-  audio.load();
   playbackTimedOut = false;
 }
 
 function warmStreamConnection() {
   if (audio.src) return;
-  audio.src = STREAM_PATH + "?session=" + Date.now().toString(36);
+  audio.src = streamUrl();
   audio.preload = "auto";
-  audio.load();
 }
 
 function showPlaybackFailure(error, automatic) {
