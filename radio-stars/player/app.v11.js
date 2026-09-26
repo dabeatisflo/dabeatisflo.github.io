@@ -29,6 +29,7 @@ const toast = document.querySelector("#toast");
 const STREAM_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/stream";
 const NOW_PLAYING_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/now-playing";
 const NOW_PLAYING_INTERVAL_MS = 2000;
+const NOW_PLAYING_ERROR_TEXT = { fr: "Titre live indisponible", nl: "Live titel niet beschikbaar", en: "Live track unavailable" };
 const SHARE_URL = new URL("./", location.href).href;
 const STARTUP_TIMEOUT_MS = 12000;
 const audio = new Audio();
@@ -622,7 +623,9 @@ async function refreshNowPlaying() {
     nowPlayingTitle.textContent = title;
     nowPlayingLabel.textContent = t("À l’antenne");
     updateMediaMetadata(title);
-  } catch (_) {}
+  } catch (_) {
+    nowPlayingTitle.textContent = NOW_PLAYING_ERROR_TEXT[activeLocale] || NOW_PLAYING_ERROR_TEXT.fr;
+  }
 }
 
 refreshNowPlaying();
