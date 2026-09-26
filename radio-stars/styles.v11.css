@@ -1674,6 +1674,8 @@ button { color: inherit; }
   .mobile-language .language { width: auto; }
   .mobile-language .language-trigger { width: auto; min-width: 72px; justify-content: center; }
   .mobile-language .language-menu { width: max-content; min-width: 150px; left: 50%; right: auto; transform: translateX(-50%); text-align: left; }
+  .mobile-language .language-menu { position: absolute !important; top: calc(100% + 7px) !important; width: max-content !important; min-width: 150px; left: 50% !important; right: auto !important; margin-top: 0 !important; transform: translate(-50%, -6px) !important; text-align: left; }
+  .mobile-language .language[data-open="true"] .language-menu { display: grid !important; opacity: 1; visibility: visible; transform: translate(-50%, 0) !important; }
   .nav-tools { grid-template-columns: 1fr; order: -1; justify-items: stretch; }
   .nav-link, .language-trigger, .language-option, .header-listen { justify-content: flex-start; text-align: left; }
   .nav-link { width: 100%; box-sizing: border-box; overflow-wrap: anywhere; }
