@@ -47,6 +47,26 @@
           <img src="./logo.png" width="420" height="300" alt="Radio Stars 98.5 FM">
         </a>
 
+        <div class="mobile-language"><div class="language" id="language" data-open="false">
+              <button class="language-trigger" id="language-trigger" type="button"
+                      aria-controls="language-menu" aria-expanded="false"
+                      aria-label="Choisir la langue">
+                FR
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4Z"/></svg>
+              </button>
+              <div class="language-menu" id="language-menu" role="menu" aria-label="Langues">
+                <button class="language-option" type="button" data-language="fr" role="menuitem">
+                  Français
+                </button>
+                <button class="language-option" type="button" data-language="nl" role="menuitem">
+                  Nederlands
+                </button>
+                <button class="language-option" type="button" data-language="en" role="menuitem">
+                  English
+                </button>
+              </div>
+            </div></div>
+
         <button class="menu-toggle" id="menu-toggle" type="button"
                 aria-controls="nav-panel" aria-expanded="false">
           <span class="sr-only">Ouvrir ou fermer le menu</span>
@@ -65,26 +85,6 @@
           </div>
 
           <div class="nav-tools">
-            <div class="language" id="language" data-open="false">
-              <button class="language-trigger" id="language-trigger" type="button"
-                      aria-controls="language-menu" aria-expanded="false"
-                      aria-label="Choisir la langue">
-                FR
-                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4Z"/></svg>
-              </button>
-              <div class="language-menu" id="language-menu" role="menu" aria-label="Langues">
-                <button class="language-option" type="button" data-language="fr" role="menuitem">
-                  Français
-                </button>
-                <button class="language-option" type="button" data-language="nl" role="menuitem">
-                  Nederlands
-                </button>
-                <button class="language-option" type="button" data-language="en" role="menuitem">
-                  English
-                </button>
-              </div>
-            </div>
-
             <a class="button button-red header-listen" href="./player/?autoplay=1"
                rel="noopener noreferrer" data-player>
               Écouter <span class="arrow" aria-hidden="true">↗</span>
