@@ -290,9 +290,15 @@ function showToast(message) {
   }, 2400);
 }
 
+function sliderToAudioVolume(value) {
+  const slider = Math.max(0, Math.min(1, value));
+  if (slider === 0) return 0;
+  return Math.pow(slider, 2.5);
+}
+
 function updateVolume(value) {
   const numeric = Math.max(0, Math.min(1, value));
-  audio.volume = numeric;
+  audio.volume = sliderToAudioVolume(numeric);
   renderVolume(numeric, true);
 }
 
