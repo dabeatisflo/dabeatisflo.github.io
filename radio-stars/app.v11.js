@@ -28,6 +28,10 @@ const TRANSLATIONS = {
     "Découvrir les programmes": "Ontdek de programma's",
     "En ligne": "Online",
     "En direct": "Live",
+    "À l’antenne": "Now playing",
+    "Chargement du titre…": "Loading track…",
+    "À l’antenne": "Nu op de radio",
+    "Chargement du titre…": "Titel wordt geladen…",
     "Le player officiel": "De officiële speler",
     "Le direct dans sa propre fenêtre.": "Luister live in een apart venster.",
     "Le player s’ouvre séparément : il ne gêne jamais votre lecture et son adresse peut être partagée directement.": "De speler opent in een apart venster. Zo kun je rustig verder lezen en de link rechtstreeks delen.",
@@ -364,6 +368,8 @@ const menuToggle = document.querySelector("#menu-toggle");
 const navPanel = document.querySelector("#nav-panel");
 const language = document.querySelector("#language");
 const languageTrigger = document.querySelector("#language-trigger");
+const siteNowPlayingLabel = document.querySelector("#site-now-playing-label");
+const siteNowPlayingTitle = document.querySelector("#site-now-playing-title");
 const languageOptions = Array.from(document.querySelectorAll("[data-language]"));
 const contactForm = document.querySelector("#contact-form");
 const appSection = document.querySelector("#application");
@@ -556,6 +562,21 @@ document.querySelectorAll("[data-player]").forEach(function (link) {
 languageOptions.forEach(function (option) {
   option.setAttribute("aria-current", option.dataset.language === activeLocale ? "true" : "false");
 });
+
+async function refreshSiteNowPlaying() {
+  if (!siteNowPlayingTitle) return;
+  try {
+    const result = await fetch(NOW_PLAYING_URL + "?_=" + Date.now(), { cache: "no-store" });
+    if (!result.ok) return;
+    const data = await result.json();
+    const title = String(data && data.title || "").trim();
+    if (!title) return;
+    siteNowPlayingTitle.textContent = title;
+    if (siteNowPlayingLabel) siteNowPlayingLabel.textContent = t("À l’antenne");
+  } catch (_) {}
+}
+refreshSiteNowPlaying();
+window.setInterval(refreshSiteNowPlaying, NOW_PLAYING_INTERVAL_MS);
 
 function showToast(message) {
   toast.textContent = message;
