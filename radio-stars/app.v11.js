@@ -555,25 +555,6 @@ document.documentElement.dataset.detectedLanguage = detectedLocale;
 document.documentElement.dataset.preferredLanguage = preferredLocale;
 translateDocument();
 languageTrigger.firstChild.nodeValue = activeLocale.toUpperCase() + "\n                ";
-document.querySelectorAll("[data-player]").forEach(function (link) {
-  const destination = new URL(link.href);
-  destination.searchParams.set("lang", activeLocale);
-  destination.searchParams.set("autoplay", "1");
-  link.href = destination.href;
-
-  link.addEventListener("click", function (event) {
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
-    if (isMobile) return;
-    event.preventDefault();
-    const popup = window.open(destination.href, "radioStarsPlayer", "popup=yes,width=460,height=760,resizable=yes,scrollbars=yes");
-    if (!popup) {
-      location.href = destination.href;
-      return;
-    }
-    try { popup.focus(); } catch (_) {}
-  });
-});
-
 languageOptions.forEach(function (option) {
   option.setAttribute("aria-current", option.dataset.language === activeLocale ? "true" : "false");
 });
