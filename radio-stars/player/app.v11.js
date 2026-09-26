@@ -5,6 +5,8 @@ const playButton = document.querySelector("#play");
 const statusBox = document.querySelector("#status");
 const statusTitle = document.querySelector("#status-title");
 const statusDetail = document.querySelector("#status-detail");
+const nowPlayingTitle = document.querySelector("#now-playing-title");
+const nowPlayingLabel = document.querySelector(".now-playing-label");
 const volume = document.querySelector("#volume");
 const volumeValue = document.querySelector("#volume-value");
 const shareButton = document.querySelector("#share");
@@ -25,6 +27,8 @@ const shareFeedback = document.querySelector("#share-feedback");
 const toast = document.querySelector("#toast");
 
 const STREAM_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/stream";
+const NOW_PLAYING_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/now-playing";
+const NOW_PLAYING_INTERVAL_MS = 15000;
 const SHARE_URL = new URL("./", location.href).href;
 const STARTUP_TIMEOUT_MS = 12000;
 const audio = new Audio();
@@ -67,6 +71,7 @@ const TRANSLATIONS = {
     "Player officiel": "Officiële speler",
     "En ligne": "Online",
     "Prêt à écouter": "Klaar om te luisteren",
+    "À l’antenne": "Nu op de radio",
     "Appuyez sur le bouton rouge pour lancer le direct.": "Druk op de rode knop om de live-uitzending te starten.",
     "Partager": "Delen",
     "Le site": "De website",
@@ -130,6 +135,7 @@ const TRANSLATIONS = {
     "Player officiel": "Official player",
     "En ligne": "Online",
     "Prêt à écouter": "Ready to listen",
+    "À l’antenne": "Now playing",
     "Appuyez sur le bouton rouge pour lancer le direct.": "Press the red button to start the live stream.",
     "Partager": "Share",
     "Le site": "The website",
@@ -582,6 +588,45 @@ tiktokShareButton.addEventListener("click", function (event) {
 window.addEventListener("keydown", function (event) {
   if (event.key === "Escape" && !sharePanel.hidden) closeSharePanel();
 });
+
+let currentTrackTitle = "";
+
+function splitTrack(value) {
+  const text = String(value || "").trim();
+  const parts = text.split(/\s+-\s+/);
+  if (parts.length < 2) return { title: text || "Radio Stars 98.5 FM", artist: "Radio Stars" };
+  return { artist: parts.shift().trim() || "Radio Stars", title: parts.join(" - ").trim() || text };
+}
+
+function updateMediaMetadata(trackText) {
+  if (!("mediaSession" in navigator) || typeof MediaMetadata !== "function") return;
+  const track = splitTrack(trackText);
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title,
+      artist: track.artist,
+      album: "Radio Stars 98.5 FM · DAB+",
+      artwork: [{ src: "https://radio-stars-player.gzqlah8.chatgpt.site/logo.png", sizes: "512x512", type: "image/png" }]
+    });
+  } catch (_) {}
+}
+
+async function refreshNowPlaying() {
+  try {
+    const result = await fetch(NOW_PLAYING_PATH + "?_=" + Date.now(), { cache: "no-store" });
+    if (!result.ok) return;
+    const data = await result.json();
+    const title = String(data && data.title || "").trim();
+    if (!title) return;
+    currentTrackTitle = title;
+    nowPlayingTitle.textContent = title;
+    nowPlayingLabel.textContent = t("À l’antenne");
+    updateMediaMetadata(title);
+  } catch (_) {}
+}
+
+refreshNowPlaying();
+window.setInterval(refreshNowPlaying, NOW_PLAYING_INTERVAL_MS);
 
 if ("mediaSession" in navigator) {
   try {
