@@ -543,7 +543,7 @@ function storedLocale() {
 
 function requestedLocale() {
   const query = normalizeLocale(new URLSearchParams(location.search).get("lang"));
-  return query || storedLocale() || "fr";
+  return query || "fr";
 }
 
 const detectedLocale = browserLocale();
