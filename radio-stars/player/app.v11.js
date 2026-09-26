@@ -28,7 +28,7 @@ const toast = document.querySelector("#toast");
 
 const STREAM_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/stream";
 const NOW_PLAYING_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/now-playing";
-const NOW_PLAYING_INTERVAL_MS = 15000;
+const NOW_PLAYING_INTERVAL_MS = 2000;
 const SHARE_URL = new URL("./", location.href).href;
 const STARTUP_TIMEOUT_MS = 12000;
 const audio = new Audio();
