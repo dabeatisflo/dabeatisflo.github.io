@@ -6,6 +6,8 @@ const PLAYER_ORIGIN = new URL(PLAYER_URL).origin;
 const AVAILABLE_LOCALES = Object.freeze(["fr", "nl", "en"]);
 const KNOWN_LOCALES = Object.freeze(["fr", "nl", "en"]);
 const APP_DOWNLOAD_URLS = Object.freeze({ android: "", ios: "" });
+const NOW_PLAYING_URL = "https://radio-stars-player.gzqlah8.chatgpt.site/now-playing";
+const NOW_PLAYING_INTERVAL_MS = 2000;
 
 const TRANSLATIONS = {
   "nl": {
