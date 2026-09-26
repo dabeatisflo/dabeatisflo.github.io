@@ -35,7 +35,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./logo-original.png">
     <link rel="manifest" href="./site.webmanifest">
-    <link rel="stylesheet" href="./styles.v11.css?v=20260926-6">
+    <link rel="stylesheet" href="./styles.v11.css?v=20260926-7">
     <title>Radio Stars 98.5 FM — Appréciez la différence</title>
   </head>
   <body>
@@ -66,13 +66,16 @@
           </div>
 
         <div class="nav-tools">
-            <div class="language language-direct" id="language" data-open="false" aria-label="Langues">
-            <button class="language-option language-direct-option" type="button" data-language="fr">FR</button>
-            <button class="language-option language-direct-option" type="button" data-language="nl">NL</button>
-            <button class="language-option language-direct-option" type="button" data-language="en">EN</button>
-            <button class="language-trigger language-trigger-hidden" id="language-trigger" type="button"
-                    aria-controls="language-menu" aria-expanded="false" aria-label="Choisir la langue">FR</button>
-            <div class="language-menu language-menu-hidden" id="language-menu" role="menu" aria-label="Langues"></div>
+            <div class="language" id="language" data-open="false" aria-label="Langues">
+              <button class="language-trigger" id="language-trigger" type="button"
+                      aria-controls="language-menu" aria-expanded="false" aria-label="Choisir la langue">FR
+                <svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.25 6 6.25l5-5"/></svg>
+              </button>
+              <div class="language-menu" id="language-menu" role="menu" aria-label="Langues">
+                <button class="language-option" type="button" data-language="fr"><span>Français</span><small>FR</small></button>
+                <button class="language-option" type="button" data-language="nl"><span>Nederlands</span><small>NL</small></button>
+                <button class="language-option" type="button" data-language="en"><span>English</span><small>EN</small></button>
+              </div>
             </div>
             <a class="button button-red header-listen" href="./player/?autoplay=1"
                rel="noopener noreferrer" data-player>
@@ -482,6 +485,6 @@
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./app.v11.js?v=20260926-6" defer></script>
+    <script src="./app.v11.js?v=20260926-7" defer></script>
   </body>
 </html>
