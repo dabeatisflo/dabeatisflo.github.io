@@ -28,7 +28,7 @@ const toast = document.querySelector("#toast");
 
 const STREAM_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/stream";
 const NOW_PLAYING_PATH = "https://radio-stars-player.gzqlah8.chatgpt.site/now-playing";
-const NOW_PLAYING_INTERVAL_MS = 2000;
+const NOW_PLAYING_INTERVAL_MS = 10000;
 const NOW_PLAYING_ERROR_TEXT = { fr: "Titre live indisponible", nl: "Live titel niet beschikbaar", en: "Live track unavailable" };
 const SHARE_URL = new URL("./", location.href).href;
 const STARTUP_TIMEOUT_MS = 12000;
@@ -416,14 +416,28 @@ playButton.addEventListener("click", function () {
   startPlayback(false);
 });
 
-volume.addEventListener("input", function () {
-  const numeric = Number(volume.value) / 100;
+let volumeFrame = 0;
+let pendingVolume = null;
+function applyPendingVolume() {
+  volumeFrame = 0;
+  if (pendingVolume === null) return;
+  const numeric = pendingVolume;
+  pendingVolume = null;
   if (remoteOrigin && !remoteFailed) {
-    renderVolume(numeric, true);
+    renderVolume(numeric, false);
     sendRemoteCommand("volume", numeric);
   } else {
-    updateVolume(numeric);
+    audio.volume = sliderToAudioVolume(numeric);
+    renderVolume(numeric, false);
   }
+}
+volume.addEventListener("input", function () {
+  pendingVolume = Number(volume.value) / 100;
+  if (!volumeFrame) volumeFrame = window.requestAnimationFrame(applyPendingVolume);
+});
+volume.addEventListener("change", function () {
+  const numeric = Number(volume.value) / 100;
+  try { localStorage.setItem("radioStarsVolume", String(numeric)); } catch (_) {}
 });
 
 window.addEventListener("message", function (event) {
