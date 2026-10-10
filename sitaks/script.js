@@ -1,7 +1,6 @@
 (()=>{'use strict';
 const nav=document.getElementById('site-nav'),menu=document.getElementById('menu-btn');
 if(nav&&menu){menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false')}));}
-const form=document.getElementById('contact-form');if(form)form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const d=new FormData(form);location.href='mailto:peter.poels@sitaks.be?subject='+encodeURIComponent('[SITAKS] '+d.get('subject'))+'&body='+encodeURIComponent('Naam: '+d.get('name')+'\nE-mail: '+d.get('email')+'\n\n'+d.get('message'));});
 const radio=document.getElementById('radio-player'),radioStatus=document.getElementById('radio-status');
 if(radio){
   // This is the PUBLIC HTTPS relay endpoint, never the original NAS source address.
