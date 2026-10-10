@@ -19,7 +19,7 @@ form.addEventListener('submit',async function(ev){
   var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},20000),response;
   try{response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload),signal:controller.signal,credentials:'omit'});}finally{clearTimeout(timer);}
   var info;try{info=await response.json();}catch(e){throw Error('De server gaf geen geldig antwoord.');}
-  if(!response.ok||info.success!==true)throw Error(info.message||'De verzending werd geweigerd.');
+  if(!response.ok||(info.success!==true&&info.success!=='true'))throw Error(info.message||'De verzending werd geweigerd.');
   status.textContent=isDemo?'De formulierdienst heeft je bericht verwerkt. Peter moet zijn ontvangstadres eerst eenmalig verifiëren; tot dan kan bezorging niet gegarandeerd worden.':'De NAS heeft het bericht aan het mailsysteem aangeboden. Peter kan de ontvangst in zijn mailbox controleren.';
   form.reset();
  }catch(err){status.textContent='Niet verzonden: '+(err.name==='AbortError'?'time-out bij de server':err.message)+'. Probeer later opnieuw.';}
