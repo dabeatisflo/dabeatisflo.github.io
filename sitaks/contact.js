@@ -41,7 +41,7 @@ form.addEventListener('submit',async function(ev){
  status.textContent=isDemo?'De formulierdienst heeft het bericht aangenomen; de ontvangst door Peter moet nog worden getest.':'De NAS heeft het bericht aan het mailsysteem aangeboden; de ontvangst moet nog worden getest.';
  form.reset();
  }catch(e){status.textContent='Niet verzonden: '+(e.name==='AbortError'?'server-time-out':e.message)+'. Probeer opnieuw.';}
- finally{btn.disabled=false;btn.textContent='Verstuur bericht ↗';await newChallenge();}
+ finally{btn.disabled=false;btn.textContent='Verstuur bericht';await newChallenge();}
 });
 newChallenge();
 })();
