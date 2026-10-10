@@ -1,0 +1,12 @@
+/* SITAKS: toegankelijke sociale knoppen, onafhankelijk van het bestaande thema */
+.social-area{box-sizing:border-box;margin-top:28px;padding:24px 0 10px;border-top:1px solid rgba(64,204,255,.28)}
+.social-area h3{margin:0 0 17px;font-size:clamp(17px,1.15vw,23px);line-height:1.3;color:#eaf8ff;letter-spacing:.01em}
+.social-links{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.social-pill{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:flex-start;gap:10px;min-height:48px;min-width:140px;padding:7px 16px 7px 8px;border:1px solid rgba(68,209,255,.54);border-radius:999px;background:rgba(6,42,76,.8);color:#f0fbff!important;text-decoration:none!important;font-size:14px;font-weight:700;line-height:1.2;transition:background-color .2s ease,box-shadow .2s ease,border-color .2s ease}
+.social-pill:hover,.social-pill:focus-visible{background:rgba(14,100,152,.85);border-color:#66e5ff;box-shadow:0 0 17px rgba(45,191,253,.23);outline-offset:3px}
+.social-pill:focus-visible{outline:2px solid #86edff}
+.social-icon{flex:none;display:grid;place-items:center;width:33px;height:33px;border-radius:50%;background:#0a71ad;color:#fff}
+.social-icon svg{display:block;width:19px;height:19px}
+@media(max-width:590px){.social-area{margin-top:24px;padding:22px 0 6px}.social-area h3{font-size:19px}.social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.social-pill{min-width:0;padding:7px 9px 7px 6px;min-height:48px;font-size:13px;gap:8px}.social-icon{width:32px;height:32px}}
+@media(max-width:355px){.social-pill{font-size:12px;gap:5px;padding-right:4px}.social-icon{width:29px;height:29px}}
+@media(prefers-reduced-motion:reduce){.social-pill{transition:none}}
