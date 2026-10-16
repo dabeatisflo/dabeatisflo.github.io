@@ -17,3 +17,13 @@
 .captcha-panel .contact-tip{margin:8px 0 0}
 .contact-form button[type=submit]{max-width:100%;white-space:normal;text-align:center}
 @media(max-width:590px){.captcha-panel{padding:12px}.captcha-panel input{max-width:100%}.contact-form textarea{max-height:55vh}}
+/* SITAKS-beveiliging: donkerblauw/cyaan, passend bij de website */
+.sitaks-captcha{margin:12px 0 18px;border-color:#35bdf5!important;background:linear-gradient(135deg,#031a33,#082c4a)!important;box-shadow:inset 0 0 28px #1498f012}
+.sitaks-captcha-inner{display:flex;align-items:center;gap:15px;padding:10px 0}
+.sitaks-captcha-shield{display:grid;place-items:center;width:45px;height:45px;flex-shrink:0;border:2px solid #4be0ff;border-radius:12px;color:#a5f9ff;background:#063d66;font-size:24px;font-weight:800}
+.sitaks-captcha-inner strong{color:#e7f9ff;display:block;font-size:15px}
+.sitaks-captcha-inner .contact-tip{margin:6px 0 0;color:#b1d8ee;font-size:12px}
+.sitaks-captcha-brand{font-size:10px;line-height:1.3;letter-spacing:.12em;color:#63ceec;text-align:center;margin-left:auto;white-space:nowrap;font-weight:800}
+#turnstile-container{margin:7px 0;max-width:100%;overflow:hidden}
+#turnstile-container iframe{max-width:100%}
+@media(max-width:430px){.sitaks-captcha-inner{flex-wrap:wrap}.sitaks-captcha-brand{margin-left:0}}
