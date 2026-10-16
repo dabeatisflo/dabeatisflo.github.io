@@ -1,8 +1,8 @@
-/* SITAKS Radio – originele Icecast HTTP MP3-bron van Peter.
-   De speler gebruikt uitsluitend /live.mp3, zonder AAC en zonder nieuw tabblad.
-   LET OP: GitHub Pages draait op HTTPS. Browsers blokkeren/upgraden doorgaans
-   HTTP-audio daar. Op een HTTP-gehoste Synology-pagina werkt deze bron wel.
-   Later kan alleen radioUrl naar een werkende HTTPS-relay worden veranderd. */
+/* SITAKS Radio – MP3 via afzonderlijke HTTPS-relay.
+ * De originele Icecast-bron van Peter blijft HTTP op poort 8000.
+ * Deze HTTPS-doorgifte is op OVH getest met echte audiogegevens.
+ * Er is geen AAC-fallback en er opent geen nieuw tabblad.
+ */
 window.SITAKS_CONFIG = {
-  radioUrl: "http://sitaksnas2.synology.me:8000/live.mp3"
+  radioUrl: "https://power-events.be/sitaks-radio/stream.php"
 };
