@@ -167,3 +167,17 @@ input,textarea,select{max-width:100%}
 
 /* Radiofoto: toon hele afbeelding zonder uitsnede (16-10-2026) */
 .photo:has(img[src*="sitaks-radio"]) img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;background:#020b1a}
+
+/* SITAKS 2026-10-16: nieuw goedgekeurd, volledig portret in de Radio/Webradio-tegel.
+   Bewaar beide zijkanten en de volledige afbeelding, op mobiel en desktop. */
+.tile.tile-radio img{
+ display:block!important;
+ width:100%!important;
+ height:auto!important;
+ max-height:none!important;
+ min-height:0!important;
+ aspect-ratio:880 / 1173!important;
+ object-fit:contain!important;
+ object-position:center!important;
+ background:#031629;
+}
