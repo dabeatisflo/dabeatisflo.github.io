@@ -21,7 +21,7 @@ hidden('_captcha','true'); // This asks FormSubmit to perform its server-provide
 hidden('_template','table');
 hidden('_subject','SITAKS contact');
 const setButton=()=>{if(button)button.disabled=local||!human||!human.checked;};
-if(human)human.addEventListener('change',setButton);
+if(human){human.checked=false;human.addEventListener('change',setButton);}
 setButton();
 if(local){
  if(status)status.textContent='Verzenden werkt niet vanuit een lokaal bestand. Open de online website.';
