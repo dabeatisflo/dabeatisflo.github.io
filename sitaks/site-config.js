@@ -1,9 +1,9 @@
-/* SITAKS publieke radioconfiguratie.
- * De originele HTTP Icecast-bron (poort 8000) hoort NIET in publieke GitHub-code.
- * Voeg pas een HTTPS-relay toe nadat deze op de Synology werkelijk bereikbaar is.
- * Voorbeeld na instellen aparte HTTPS-poort: https://sitaksnas2.synology.me:8443/live.mp3
+/* SITAKS Radio: MP3-only stream.
+ * Icecast source: /live.mp3 (currently HTTP; not usable directly on GitHub Pages).
+ * Set radioUrl below only after the HTTPS reverse proxy has been tested.
+ * Planned HTTPS URL: https://sitaksnas2.synology.me:8443/live.mp3
+ * Do not publish NAS credentials, internal IP addresses or HTTP :8000 source.
  */
 window.SITAKS_CONFIG = {
-  radioUrl: "",
-  radioFallbackUrl: ""
+  radioUrl: ""
 };
