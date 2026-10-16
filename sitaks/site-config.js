@@ -5,5 +5,6 @@
  * Do not publish NAS credentials, internal IP addresses or HTTP :8000 source.
  */
 window.SITAKS_CONFIG = {
-  radioUrl: ""
+  radioUrl: "",
+  directMp3Url: "http://sitaksnas2.synology.me:8000/live.mp3"
 };
