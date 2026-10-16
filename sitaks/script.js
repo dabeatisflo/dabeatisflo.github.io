@@ -14,8 +14,7 @@ const setStatus=msg=>{if(status)status.textContent=msg;};
 const cfg=window.SITAKS_CONFIG||{};
 const valid=url=>typeof url==='string'&&url.startsWith('https://');
 const primary=valid(cfg.radioUrl)?cfg.radioUrl:'';
-const backup=valid(cfg.radioFallbackUrl)&&cfg.radioFallbackUrl!==primary?cfg.radioFallbackUrl:'';
-let usedBackup=false,wasRequested=false;
+let wasRequested=false;
 if(!primary){player.removeAttribute('src');player.setAttribute('aria-disabled','true');setStatus('Radiostream nog niet geconfigureerd.');return;}
 player.src=primary;
 player.preload='none';
@@ -29,15 +28,5 @@ player.addEventListener('waiting',()=>setStatus('De uitzending wordt geladen…'
 player.addEventListener('stalled',()=>setStatus('De uitzending ondervindt vertraging. Even wachten…'));
 player.addEventListener('pause',()=>{if(!player.error&&!player.ended&&wasRequested)setStatus('Radio gepauzeerd.');});
 player.addEventListener('ended',()=>setStatus('De uitzending is gestopt. Druk opnieuw op afspelen.'));
-player.addEventListener('error',()=>{
- if(!usedBackup&&backup){
-  usedBackup=true;
-  setStatus('Primaire stream niet bereikbaar; reservemount wordt geprobeerd…');
-  player.src=backup;
-  player.load();
-  if(wasRequested)player.play().catch(()=>setStatus('Reservemount geselecteerd. Druk opnieuw op afspelen.'));
-  return;
- }
- setStatus('Geen verbinding met de radiostream. De publieke HTTPS-relay of de uitzending is niet beschikbaar.');
-});
+player.addEventListener('error',()=>setStatus('De MP3-radiostream is niet bereikbaar via HTTPS. Controleer de Synology-reverse-proxy en Icecast /live.mp3.'));
 })();
