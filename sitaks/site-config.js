@@ -1,8 +1,8 @@
-/* SITAKS Radio – uitsluitend MP3, afspelen binnen de bestaande HTML5-player.
- * Vereist op de Synology: HTTPS :8443 -> HTTP Icecast :8000.
- * Het endpoint is VOORBEREID, maar de HTTPS-relay is nog NIET bevestigd.
- * Bronstream (HTTP) hoort niet rechtstreeks als audio.src op GitHub Pages.
- */
+/* SITAKS Radio – originele Icecast HTTP MP3-bron van Peter.
+   De speler gebruikt uitsluitend /live.mp3, zonder AAC en zonder nieuw tabblad.
+   LET OP: GitHub Pages draait op HTTPS. Browsers blokkeren/upgraden doorgaans
+   HTTP-audio daar. Op een HTTP-gehoste Synology-pagina werkt deze bron wel.
+   Later kan alleen radioUrl naar een werkende HTTPS-relay worden veranderd. */
 window.SITAKS_CONFIG = {
-  radioUrl: "https://sitaksnas2.synology.me:8443/live.mp3"
+  radioUrl: "http://sitaksnas2.synology.me:8000/live.mp3"
 };
