@@ -17,6 +17,25 @@ const mixed=location.protocol==='https:'&&source.toLowerCase().startsWith('http:
 const slider=document.getElementById('radio-volume');
 const value=document.getElementById('radio-volume-value');
 const mute=document.getElementById('radio-mute');
+const playToggle=document.getElementById('radio-play-toggle');
+const radioCard=player.closest('.radio-player');
+const markPlayback=(playing,buffering=false)=>{
+ if(radioCard){radioCard.classList.toggle('is-playing',playing);radioCard.classList.toggle('is-buffering',buffering)}
+ if(playToggle){
+  playToggle.textContent=playing?'Ⅱ Pauzeren':'▶ Afspelen';
+  playToggle.setAttribute('aria-pressed',String(playing));
+  playToggle.setAttribute('aria-label',playing?'Pauzeer SITAKS Radio':'Speel SITAKS Radio af');
+ }
+};
+if(playToggle)playToggle.addEventListener('click',async()=>{
+ if(!player.src||player.getAttribute('aria-disabled')==='true')return;
+ if(!player.paused){
+  player.pause();markPlayback(false);return;
+ }
+ markPlayback(false,true);
+ try{await player.play()}
+ catch(e){markPlayback(false);setStatus('Afspelen lukt momenteel niet. Probeer opnieuw.')}
+});
 let lastPosition=85,requested=false;
 function setVolume(position){
  const pos=Math.min(100,Math.max(0,Number(position)||0));
@@ -35,7 +54,7 @@ if(slider){
 }
 if(mute)mute.addEventListener('click',()=>setVolume(player.muted||Number(slider?.value)===0?lastPosition:0));
 if(!source){
- player.removeAttribute('src');player.setAttribute('aria-disabled','true');
+ player.removeAttribute('src');player.setAttribute('aria-disabled','true');if(playToggle)playToggle.disabled=true;
  setStatus('MP3-bron niet geconfigureerd.');return;
 }
 player.src=source;
@@ -44,11 +63,11 @@ player.removeAttribute('aria-disabled');
 player.setAttribute('controlsList','nodownload noplaybackrate noremoteplayback');
 player.disableRemotePlayback=true;
 setStatus(mixed?'MP3-bron ingesteld. Let op: GitHub Pages is HTTPS; de browser kan de HTTP-stream blokkeren.':'Klaar om SITAKS Radio live te beluisteren.');
-player.addEventListener('play',()=>{requested=true;setStatus('Verbinding maken met SITAKS Radio…');});
-player.addEventListener('playing',()=>setStatus('SITAKS Radio speelt nu live (MP3).'));
-player.addEventListener('waiting',()=>setStatus('De uitzending wordt geladen…'));
-player.addEventListener('stalled',()=>setStatus('De verbinding wacht op audiogegevens…'));
-player.addEventListener('pause',()=>{if(!player.error&&requested)setStatus('Gepauzeerd.');});
-player.addEventListener('ended',()=>setStatus('De uitzending is gestopt. Druk op afspelen om opnieuw te verbinden.'));
-player.addEventListener('error',()=>setStatus(mixed?'De browser blokkeert of wijzigt de HTTP-stream op deze HTTPS-website. Gebruik een HTTP-site op de Synology of een HTTPS-relay.':'De MP3-stream is niet bereikbaar. Controleer Icecast /live.mp3.'));
+player.addEventListener('play',()=>{requested=true;markPlayback(false,true);setStatus('Verbinding maken met SITAKS Radio…');});
+player.addEventListener('playing',()=>{markPlayback(true);setStatus('SITAKS Radio speelt nu live (MP3).');});
+player.addEventListener('waiting',()=>{markPlayback(false,true);setStatus('De uitzending wordt geladen…');});
+player.addEventListener('stalled',()=>{markPlayback(false,true);setStatus('De verbinding wacht op audiogegevens…');});
+player.addEventListener('pause',()=>{markPlayback(false);if(!player.error&&requested)setStatus('Gepauzeerd.');});
+player.addEventListener('ended',()=>{markPlayback(false);setStatus('De uitzending is gestopt. Druk op afspelen om opnieuw te verbinden.');});
+player.addEventListener('error',()=>{markPlayback(false);setStatus(mixed?'De browser blokkeert of wijzigt de HTTP-stream op deze HTTPS-website. Gebruik een HTTP-site op de Synology of een HTTPS-relay.':'De MP3-stream is niet bereikbaar. Controleer Icecast /live.mp3.');});
 })();
