@@ -28,22 +28,11 @@
 #turnstile-container iframe{max-width:100%}
 @media(max-width:430px){.sitaks-captcha-inner{flex-wrap:wrap}.sitaks-captcha-brand{margin-left:0}}
 
-/* Handmatige bevestiging in SITAKS-stijl; nooit vooraf aangevinkt. */
-.sitaks-captcha .sitaks-human-label{
-  display:inline-flex;align-items:center;gap:14px;width:auto;max-width:100%;
-  margin:0;cursor:pointer;color:#eaffff;font-size:16px;font-weight:750;
-}
-.sitaks-captcha #sitaks-human-check{
-  display:block!important;appearance:none;-webkit-appearance:none;
-  flex:0 0 25px;width:25px!important;height:25px!important;min-height:25px!important;
-  margin:0!important;padding:0!important;border:2px solid #80dfff;
-  border-radius:5px;background:#03182d;cursor:pointer;
-}
-.sitaks-captcha #sitaks-human-check:checked{background:#048fc5;border-color:#95f4ff}
-.sitaks-captcha #sitaks-human-check:checked::after{
-  content:'✓';display:grid;place-items:center;color:#fff;font-size:19px;line-height:21px;font-weight:bold
-}
-.sitaks-captcha #sitaks-human-check:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.sitaks-captcha-inner{flex-wrap:wrap;align-items:center;justify-content:space-between}
-.sitaks-captcha #sitaks-captcha-explanation{margin:10px 0 0;line-height:1.6}
-#contact-submit:disabled{opacity:.55;cursor:not-allowed;filter:grayscale(.25)}
+
+/* Echte Google reCAPTCHA v2-widget, rechtstreeks ingebed in SITAKS. */
+.sitaks-captcha{background:linear-gradient(135deg,#031a33,#082c4a)!important;border:1px solid #35bdf5!important}
+.sitaks-recaptcha-frame{display:flex;align-items:center;justify-content:flex-start;min-height:80px;max-width:100%;margin:8px 0 12px;overflow:visible}
+#sitaks-recaptcha{max-width:100%}
+#sitaks-recaptcha iframe{max-width:100%}
+#contact-submit:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:390px){.sitaks-captcha{padding:10px}.sitaks-recaptcha-frame{min-width:0}}
