@@ -15,13 +15,13 @@ const cfg=window.SITAKS_CONFIG||{};
 const valid=url=>typeof url==='string'&&url.startsWith('https://');
 const primary=valid(cfg.radioUrl)?cfg.radioUrl:'';
 let wasRequested=false;
-if(!primary){player.removeAttribute('src');player.removeAttribute('controls');player.setAttribute('aria-disabled','true');setStatus('Live MP3 in de ingebouwde speler vereist HTTPS. Gebruik voorlopig de knop hieronder.');const direct=cfg.directMp3Url;if(typeof direct==='string'&&direct.startsWith('http://')){const link=document.createElement('a');link.href=direct;link.target='_blank';link.rel='noopener noreferrer';link.className='btn primary';link.style.marginTop='14px';link.textContent='▶ Luister MP3 rechtstreeks ↗';link.setAttribute('aria-label','Open de originele SITAKS MP3-stream in een nieuw tabblad');player.parentNode.append(link)}return;}
+if(!primary){player.removeAttribute('src');player.removeAttribute('controls');player.setAttribute('aria-disabled','true');setStatus('HTTPS-MP3-stream nog niet geconfigureerd.');return;}
 player.src=primary;
 player.preload='none';
 player.removeAttribute('aria-disabled');
 player.setAttribute('controlsList','nodownload noplaybackrate noremoteplayback');
 player.disableRemotePlayback=true;
-setStatus('Klaar om live te luisteren. Druk op afspelen.');
+setStatus('MP3-speler gereed. Druk op afspelen. De HTTPS-relay moet hiervoor actief zijn.');
 player.addEventListener('play',()=>{wasRequested=true;setStatus('Verbinden met SITAKS Radio…');});
 player.addEventListener('playing',()=>setStatus('SITAKS Radio speelt nu live.'));
 player.addEventListener('waiting',()=>setStatus('De uitzending wordt geladen…'));
