@@ -1,0 +1,7 @@
+/* SITAKS language switch – consistent in header on all breakpoints. */
+.sitaks-lang{display:flex;align-items:center;flex:0 0 auto;margin-left:12px;position:relative;z-index:81}
+.sitaks-lang select{color:#ebfaff;background:#092b4c;border:1px solid #4acbfa;border-radius:9px;min-width:82px;max-width:100%;min-height:42px;padding:8px 10px;font-size:14px;font-weight:800;cursor:pointer}
+.sitaks-lang select:focus-visible{outline:3px solid #75e9ff;outline-offset:2px}
+@media(max-width:1050px){.sitaks-lang{margin-left:3px}.sitaks-lang select{min-width:77px;padding:7px}}
+@media(max-width:850px){.topwrap{gap:8px;flex-wrap:nowrap}.sitaks-lang{order:2;margin-left:auto}.topwrap .menu{order:3}.topwrap .nav{order:4}.brand img{max-width:clamp(115px,25vw,166px)}}
+@media(max-width:400px){.sitaks-lang select{min-width:67px;min-height:40px;padding:5px;font-size:12px}.topwrap .brand img{max-width:115px}}
