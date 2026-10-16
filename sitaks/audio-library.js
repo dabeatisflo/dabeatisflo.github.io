@@ -1,5 +1,32 @@
 (()=>{'use strict';
 const list=document.getElementById('audio-clips');if(!list)return;
+/* Alle demo-audio is los geplaatst onder /sitaks/audio-test/ en kan later in één keer weg. */
+if(list.dataset.demoAudio==='christmas2026' && !list.querySelector('[data-audio-track]')){
+ const names=['1','1b','2','3','4','5','6','7','8','9','10','11','12','13','14'];
+ names.forEach((name,i)=>{
+  const display='SITAKS Radio Station — Christmas '+(name==='1b'?'01B':String(Number(name)).padStart(2,'0'));
+  const card=document.createElement('article');
+  card.className='audio-track';card.dataset.audioTrack='1';card.dataset.category='Jingles';
+  card.dataset.search='sitaks radio station kerst christmas '+name+' jingle';
+  const head=document.createElement('div');head.className='audio-track-head';
+  const symbol=document.createElement('span');symbol.className='audio-track-symbol';symbol.setAttribute('aria-hidden','true');symbol.textContent='♫';
+  const info=document.createElement('div');info.className='audio-track-info';
+  const title=document.createElement('h3');title.className='audio-track-title';title.textContent=display;
+  const meta=document.createElement('div');meta.className='audio-track-meta';meta.textContent='Jingles  /  Kerst  /  '+String(i+1).padStart(2,'0')+' van 15';
+  const descr=document.createElement('p');descr.className='audio-track-description';descr.textContent='Originele SITAKS Radio Station kerstjingle';
+  info.append(title,meta,descr);head.append(symbol,info);
+  const controls=document.createElement('div');controls.className='audio-track-controls';
+  const play=document.createElement('button');play.className='audio-play';play.type='button';play.textContent='▶';play.setAttribute('aria-label','Speel af: '+display);
+  const seek=document.createElement('input');seek.className='audio-seek';seek.type='range';seek.min='0';seek.max='100';seek.step='0.1';seek.value='0';seek.setAttribute('aria-label','Afspeelpositie: '+display);seek.disabled=true;
+  const timer=document.createElement('span');timer.className='audio-time';
+  const elapsed=document.createElement('span');elapsed.className='audio-elapsed';elapsed.textContent='00:00';
+  const duration=document.createElement('span');duration.className='audio-duration';duration.textContent='--:--';
+  timer.append(elapsed,document.createTextNode(' / '),duration);controls.append(play,seek,timer);
+  const status=document.createElement('p');status.className='audio-status';status.setAttribute('role','status');status.textContent='Klaar om te beluisteren';
+  const audio=document.createElement('audio');audio.src='audio-test/christmas'+name+'.mp3';audio.preload='metadata';audio.controls=false;
+  card.append(head,controls,status,audio);list.append(card);
+ });
+}
 const entries=[...list.querySelectorAll('[data-audio-track]')];
 const empty=document.getElementById('audio-empty'),search=document.getElementById('audio-search');
 const buttons=[...document.querySelectorAll('.library-filters [data-category]')];
