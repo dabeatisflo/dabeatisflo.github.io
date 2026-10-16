@@ -6,22 +6,38 @@ if(nav&&menu){
  nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('open')){close();menu.focus()}});
  document.addEventListener('click',e=>{if(nav.classList.contains('open')&&!nav.contains(e.target)&&!menu.contains(e.target))close()});
- window.addEventListener('resize',()=>{if(window.innerWidth>900)close()});
+ window.addEventListener('resize',()=>{if(window.innerWidth>850)close()});
 }
-const radio=document.getElementById('radio-player'),radioStatus=document.getElementById('radio-status');
-if(radio){
- const endpoint=window.SITAKS_CONFIG?.radioUrl||'';
- if(endpoint&&(endpoint.startsWith('https://')||endpoint.startsWith('/'))){
-  radio.src=endpoint;
-  radioStatus.textContent='Druk op afspelen om SITAKS Radio te beluisteren.';
- }else{
-  radio.removeAttribute('src');radio.setAttribute('aria-disabled','true');
-  radioStatus.textContent='Live radio wordt beschikbaar zodra Peter de HTTPS-relay op de NAS heeft geconfigureerd.';
+const player=document.getElementById('radio-player'),status=document.getElementById('radio-status');
+if(!player)return;
+const setStatus=msg=>{if(status)status.textContent=msg;};
+const cfg=window.SITAKS_CONFIG||{};
+const valid=url=>typeof url==='string'&&url.startsWith('https://');
+const primary=valid(cfg.radioUrl)?cfg.radioUrl:'';
+const backup=valid(cfg.radioFallbackUrl)&&cfg.radioFallbackUrl!==primary?cfg.radioFallbackUrl:'';
+let usedBackup=false,wasRequested=false;
+if(!primary){player.removeAttribute('src');player.setAttribute('aria-disabled','true');setStatus('Radiostream nog niet geconfigureerd.');return;}
+player.src=primary;
+player.preload='none';
+player.removeAttribute('aria-disabled');
+player.setAttribute('controlsList','nodownload noplaybackrate noremoteplayback');
+player.disableRemotePlayback=true;
+setStatus('Klaar om live te luisteren. Druk op afspelen.');
+player.addEventListener('play',()=>{wasRequested=true;setStatus('Verbinden met SITAKS Radio…');});
+player.addEventListener('playing',()=>setStatus('SITAKS Radio speelt nu live.'));
+player.addEventListener('waiting',()=>setStatus('De uitzending wordt geladen…'));
+player.addEventListener('stalled',()=>setStatus('De uitzending ondervindt vertraging. Even wachten…'));
+player.addEventListener('pause',()=>{if(!player.error&&!player.ended&&wasRequested)setStatus('Radio gepauzeerd.');});
+player.addEventListener('ended',()=>setStatus('De uitzending is gestopt. Druk opnieuw op afspelen.'));
+player.addEventListener('error',()=>{
+ if(!usedBackup&&backup){
+  usedBackup=true;
+  setStatus('Primaire stream niet bereikbaar; reservemount wordt geprobeerd…');
+  player.src=backup;
+  player.load();
+  if(wasRequested)player.play().catch(()=>setStatus('Reservemount geselecteerd. Druk opnieuw op afspelen.'));
+  return;
  }
- radio.addEventListener('playing',()=>radioStatus.textContent='SITAKS speelt nu live.');
- radio.addEventListener('waiting',()=>radioStatus.textContent='Bezig met verbinden…');
- radio.addEventListener('stalled',()=>radioStatus.textContent='De verbinding is onderbroken. Er wordt opnieuw gebufferd…');
- radio.addEventListener('pause',()=>{if(!radio.error&&endpoint)radioStatus.textContent='Gepauzeerd.'});
- radio.addEventListener('error',()=>radioStatus.textContent='Geen verbinding met de HTTPS-radiostream. Controleer de reverse proxy, TLS, audioformaat en NAS-bereikbaarheid.');
-}
+ setStatus('Geen verbinding met de radiostream. De publieke HTTPS-relay of de uitzending is niet beschikbaar.');
+});
 })();
