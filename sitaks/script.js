@@ -15,7 +15,7 @@ const cfg=window.SITAKS_CONFIG||{};
 const valid=url=>typeof url==='string'&&url.startsWith('https://');
 const primary=valid(cfg.radioUrl)?cfg.radioUrl:'';
 let wasRequested=false;
-if(!primary){player.removeAttribute('src');player.setAttribute('aria-disabled','true');setStatus('Radiostream nog niet geconfigureerd.');return;}
+if(!primary){player.removeAttribute('src');player.removeAttribute('controls');player.setAttribute('aria-disabled','true');setStatus('Live MP3 in de ingebouwde speler vereist HTTPS. Gebruik voorlopig de knop hieronder.');const direct=cfg.directMp3Url;if(typeof direct==='string'&&direct.startsWith('http://')){const link=document.createElement('a');link.href=direct;link.target='_blank';link.rel='noopener noreferrer';link.className='btn primary';link.style.marginTop='14px';link.textContent='▶ Luister MP3 rechtstreeks ↗';link.setAttribute('aria-label','Open de originele SITAKS MP3-stream in een nieuw tabblad');player.parentNode.append(link)}return;}
 player.src=primary;
 player.preload='none';
 player.removeAttribute('aria-disabled');
