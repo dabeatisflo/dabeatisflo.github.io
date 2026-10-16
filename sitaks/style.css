@@ -164,3 +164,6 @@ input,textarea,select{max-width:100%}
 @media (max-width:760px) {
  .page-hero.graphic,.page-hero.audio,.page-hero.mission {background-position:center,center;background-size:cover,contain}
 }
+
+/* Radiofoto: toon hele afbeelding zonder uitsnede (16-10-2026) */
+.photo:has(img[src*="sitaks-radio"]) img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;background:#020b1a}
