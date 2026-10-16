@@ -1,10 +1,8 @@
-/* SITAKS Radio: MP3-only stream.
- * Icecast source: /live.mp3 (currently HTTP; not usable directly on GitHub Pages).
- * Set radioUrl below only after the HTTPS reverse proxy has been tested.
- * Planned HTTPS URL: https://sitaksnas2.synology.me:8443/live.mp3
- * Do not publish NAS credentials, internal IP addresses or HTTP :8000 source.
+/* SITAKS Radio – uitsluitend MP3, afspelen binnen de bestaande HTML5-player.
+ * Vereist op de Synology: HTTPS :8443 -> HTTP Icecast :8000.
+ * Het endpoint is VOORBEREID, maar de HTTPS-relay is nog NIET bevestigd.
+ * Bronstream (HTTP) hoort niet rechtstreeks als audio.src op GitHub Pages.
  */
 window.SITAKS_CONFIG = {
-  radioUrl: "",
-  directMp3Url: "http://sitaksnas2.synology.me:8000/live.mp3"
+  radioUrl: "https://sitaksnas2.synology.me:8443/live.mp3"
 };
