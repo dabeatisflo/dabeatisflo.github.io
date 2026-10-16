@@ -11,19 +11,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download and validate SITAKS test jingle
+      - name: Download and checksum 15 SITAKS test jingles
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p sitaks/audio-test
-          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/V80ce8QJRARm0Afj' -o 'sitaks/audio-test/christmas1M.mp3'
-          ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=noprint_wrappers=1 'sitaks/audio-test/christmas1M.mp3' | grep -E '^codec_name=mp3$'
-          test "$(wc -c < 'sitaks/audio-test/christmas1M.mp3')" -gt 100000
-      - name: Commit the verified audio to only SITAKS folder
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/V80ce8QJRARm0Afj' -o 'sitaks/audio-test/christmas1.mp3'
+          echo 'f189cc0aad1d27a0a22af5703a5c6e4c6c55e974fc240ff547cceb13d3149797  sitaks/audio-test/christmas1.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/IpYPn0xaNzVIYbWo' -o 'sitaks/audio-test/christmas1b.mp3'
+          echo 'bb2c9d7961d7496d12ffda41d1c1b14d410557aa4c3a7572a3df1ded8f012165  sitaks/audio-test/christmas1b.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/E7XRVMgB0XWAzkYt' -o 'sitaks/audio-test/christmas2.mp3'
+          echo 'a793adfe4862c57a6c82c4440273c1ceb9887572404412f94fb1c0cfadde77df  sitaks/audio-test/christmas2.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/KcJ04OlGT1h1Z27e' -o 'sitaks/audio-test/christmas3.mp3'
+          echo 'f8264fc0e3b8b9b11b6f338f8a7de5db3c028ef076baef1a9f9b6257004b5bc5  sitaks/audio-test/christmas3.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/khC6e69mllTt3Hl9' -o 'sitaks/audio-test/christmas4.mp3'
+          echo '61791e076cbcf39d96cbc713766843025cf476c428b5b54d532cbdf29ab9e156  sitaks/audio-test/christmas4.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/vhIj2a1aTnyDBA3B' -o 'sitaks/audio-test/christmas5.mp3'
+          echo '76be25738065b4fc59b0b85a4c4a29620514406389fe93d5bdfb864dd28f868b  sitaks/audio-test/christmas5.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/6AAgYT3kC6quuolN' -o 'sitaks/audio-test/christmas6.mp3'
+          echo 'eec77c212ba466384322e7cf8225d8e35301f90d1ed84c1bc1eb5cdd28000094  sitaks/audio-test/christmas6.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/egPw5FYJALwa5nba' -o 'sitaks/audio-test/christmas7.mp3'
+          echo '6ce0bc4dd9a31eafe4b05b5e38c67ea7f2d47d131390cb707ef6b5658a2b434f  sitaks/audio-test/christmas7.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/anSg0IklmFOTq9tc' -o 'sitaks/audio-test/christmas8.mp3'
+          echo '3e1e756697015f8ed779e19a8182f51b7ff5a3ea53478082c4f5e3f649fdc833  sitaks/audio-test/christmas8.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/n4wBmzACZxPhUQCj' -o 'sitaks/audio-test/christmas9.mp3'
+          echo 'b870dfbf280d4b2a2b3829941e1ee54f5afb46bb5954e8bbda5e5bf7ba7c5b8a  sitaks/audio-test/christmas9.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/mI51wilTkVbXSTa0' -o 'sitaks/audio-test/christmas10.mp3'
+          echo '0473176ec64ebcf9c9a448b9affd5fd67f3b94f82e04de056db96822e4232c59  sitaks/audio-test/christmas10.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/V5L8pj6ybAIihZvh' -o 'sitaks/audio-test/christmas11.mp3'
+          echo '35d688698f148bbd4428fe993aebec9bd44bcc3ed017431acbc40268f0e97d79  sitaks/audio-test/christmas11.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/1uC7TgbhtH0O4Duj' -o 'sitaks/audio-test/christmas12.mp3'
+          echo '03adbc727233440d04b0548ce87bfccd952f89af9d667a7105a0dbc2c432bf83  sitaks/audio-test/christmas12.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/iy2YuEFk9CVGGI2l' -o 'sitaks/audio-test/christmas13.mp3'
+          echo '09a5c9104f13f6cb5146732b95aa0b50a61bf669c7aa7bab0444b8ca2df783b7  sitaks/audio-test/christmas13.mp3' | sha256sum -c -
+          curl --fail --location --retry 3 --retry-delay 2 --max-time 120 'https://at.adobe.com/FVdIacsVsCu6F6dK' -o 'sitaks/audio-test/christmas14.mp3'
+          echo 'aece6c7f5e736969bbf018bd0253e094c0c37d7f667ba818e69efd796209509f  sitaks/audio-test/christmas14.mp3' | sha256sum -c -
+          test "$(find sitaks/audio-test -maxdepth 1 -type f -name '*.mp3' | wc -l)" -eq 15
+      - name: Commit verified audio files to SITAKS test folder
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- sitaks/audio-test/christmas1M.mp3
-          git diff --cached --quiet || (git commit -m 'Add SITAKS first public test jingle' && git push)
+          git add -- sitaks/audio-test/
+          git diff --cached --quiet || (git commit -m 'Publish 15 SITAKS demo jingles for listening tests' && git push origin HEAD:main)
